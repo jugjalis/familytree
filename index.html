@@ -42,12 +42,14 @@
       overflow-x: hidden;
     }
 
+    /* Protected Content Wrapper */
     #protectedContent {
       display: none;
       flex-direction: column;
       min-height: 100vh;
     }
 
+    /* Login Screen Overlay */
     #loginOverlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -132,6 +134,7 @@
       font-weight: bold;
     }
 
+    /* Header Styling */
     header {
       background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
       color: white;
@@ -185,6 +188,7 @@
       font-weight: bold;
     }
 
+    /* Toast Notification */
     #toast {
       position: fixed;
       top: 15px;
@@ -206,6 +210,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Navigation Tabs */
     nav {
       background-color: white;
       border-bottom: 1px solid var(--border-color);
@@ -237,6 +242,7 @@
     .tab-btn:hover { color: var(--primary-light); }
     .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
+    /* Main Content Layout */
     main {
       flex: 1;
       padding: 12px;
@@ -248,6 +254,7 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
+    /* Controls Bar */
     .controls-card {
       background: white;
       padding: 12px;
@@ -339,6 +346,7 @@
     .btn-word { background-color: #2b579a; color: white; }
     .btn-word:hover { background-color: #1e395b; }
 
+    /* Zoom Controls Bar */
     .zoom-toolbar {
       display: flex;
       align-items: center;
@@ -360,6 +368,7 @@
 
     .zoom-btn:hover { background: #cbd5e1; }
 
+    /* Pan & Zoom Canvas Window */
     .tree-viewport {
       background: #f1f5f9;
       border: 2px solid var(--border-color);
@@ -385,6 +394,7 @@
       will-change: transform;
     }
 
+    /* Tree Node Hierarchy */
     .tf-tree {
       display: inline-flex;
       flex-direction: column;
@@ -435,6 +445,7 @@
       width: 0; height: 20px;
     }
 
+    /* Member Card */
     .member-card {
       background: white;
       border: 2px solid var(--border-color);
@@ -549,6 +560,7 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
+    /* Table View Styling */
     .table-container {
       background: white;
       border-radius: 12px;
@@ -561,6 +573,7 @@
     th, td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
     th { background-color: #f1f5f9; color: var(--text-main); font-weight: 700; }
 
+    /* Dashboard & Cards Styling */
     .dashboard-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -601,6 +614,7 @@
     .progress-bg { background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--primary-light); border-radius: 5px; }
 
+    /* Relationship Calculator Card */
     .rel-card {
       background: white;
       padding: 22px;
@@ -678,6 +692,7 @@
       line-height: 1.6;
     }
 
+    /* History / Article Editor Styling */
     .history-card {
       background: white;
       padding: 20px;
@@ -693,6 +708,7 @@
     .history-card h3 { font-size: 1.05rem; color: #334155; margin-top: 15px; margin-bottom: 6px; }
     .history-card p { margin-bottom: 12px; text-align: justify; color: #334155; }
 
+    /* Modal Styling */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -794,7 +810,7 @@
       <form onsubmit="handleLogin(event)">
         <div class="login-form-group">
           <label>Username (प्रयोगकर्ता नाम):</label>
-          <input type="text" id="loginUser" required placeholder="guest वा admin">
+          <input type="text" id="loginUser" required placeholder="admin वा guest">
         </div>
         <div class="login-form-group">
           <label>Password (पासवर्ड):</label>
@@ -1114,13 +1130,15 @@
   </div>
 
   <script>
+    // System Users Configuration
     const USERS = {
-      "admin": "jugjali2026",
-      "guest": "jugjali123"
+      "admin": "jugjali2026", // Admin: full access
+      "guest": "jugjali123"   // Viewer: read-only
     };
 
     let currentUserRole = "viewer";
 
+    // Initial Default Embedded Backup Data
     const initialBackupData = {
       "version": "2.0",
       "members": [
@@ -1133,7 +1151,7 @@
         {"id":"M746530","fatherId":"M685361","name":"पर्सलाल जुग्जाली","gender":"M","generation":4,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
         {"id":"M778573","fatherId":"M685361","name":"मनबहादुर जुग्जाली","gender":"M","generation":4,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
         {"id":"M809833","fatherId":"M685361","name":"अज्ञात","gender":"F","generation":4,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":"नाम थाहा नभएको"},
-        {"id":"M837089","fatherId":"M685361","name":"हरिसरा शेर्पन्जा","gender":"F","generation":4,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M837089","fatherId":"M685361","name":"हरिसरा शेर्pन्जा","gender":"F","generation":4,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
         {"id":"M859467","fatherId":"M685361","name":"पबिसरा रोका","gender":"F","generation":4,"order":"साइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
         {"id":"M880607","fatherId":"M685361","name":"दलिमा पुन","gender":"F","generation":4,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
         {"id":"M999900","fatherId":"M622106","name":"सिक्तानी जुग्जाली","gender":"M","generation":3,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
@@ -1180,7 +1198,7 @@
         {"id":"M747181","fatherId":"M778573","name":"प्रेमप्रसाद जुग्जाली","gender":"M","generation":5,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"M769582","fatherId":"M778573","name":"नरबहादुर जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"M796407","fatherId":"M778573","name":"झुकमति जुग्जाली","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
-        {"id":"M817322","fatherId":"M778573","name":"दल कुमारी शेर्पन्जा","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M817322","fatherId":"M778573","name":"दल कुमारी शेर्pन्जा","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"M882943","fatherId":"M246908","name":"कालिप्रसाद जुग्जाली","gender":"M","generation":5,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
         {"id":"M913202","fatherId":"M336118","name":"धनबहादुर जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"M933467","fatherId":"M336118","name":"पुर्णबहादुर जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
@@ -1216,7 +1234,7 @@
         {"id":"Mmrzwm9rx4jr8t","fatherId":"M377485","name":"टपबहादुर जुग्जाली","gender":"M","generation":6,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzwmoabwf1gh","fatherId":"M377485","name":"हेम बहादुर जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzwn6z6zy2zj","fatherId":"M377485","name":"केशरी पुन","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
-        {"id":"Mmrzwnnot3wkqz","fatherId":"M377485","name":"गौदेवी शेर्पन्जा","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwnnot3wkqz","fatherId":"M377485","name":"गौदेवी शेर्pन्जा","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzwob65o2utt","fatherId":"Mmrzwlp1kts6cr","name":"मिलन जुग्जाली","gender":"M","generation":7,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
         {"id":"Mmrzwotvfqy69c","fatherId":"Mmrzwlp1kts6cr","name":"संजय जुग्जाली","gender":"M","generation":7,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzwp7qrlkxsq","fatherId":"Mmrzwlp1kts6cr","name":"सज्जन जुग्जाली","gender":"M","generation":7,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
@@ -1231,7 +1249,7 @@
         {"id":"Mmrzx9uzfda80v","fatherId":"M556612","name":"नरु पाण्डे","gender":"F","generation":6,"order":"एकल छोरी","motherName":"चन्द्रमाया जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxaech2pydr","fatherId":"M591171","name":"ईश्वर जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxb6ohfycvj","fatherId":"M591171","name":"किशोर जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
-        {"id":"Mmrzxc0mygk4rf","fatherId":"M591171","name":"तिलु शेर्pन्जा","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxc0mygk4rf","fatherId":"M591171","name":"तिलु शेर्पन्जा","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxcldpyth26","fatherId":"M591171","name":"टीका जुग्जाली","gender":"F","generation":6,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxd2gp77jb2","fatherId":"M591171","name":"रिमा जुग्जाली","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxdvgn5ovjb","fatherId":"M613240","name":"दलबहादुर जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
@@ -1349,7 +1367,6 @@
     // --- ENHANCED BIRTH ORDER SORTING (SONS FIRST, THEN DAUGHTERS) ---
     function getOrderRank(orderStr, gender) {
       const ord = (orderStr || '').toLowerCase();
-      // If female, give them a higher base rank so sons always appear before daughters in the same family branch
       const offset = (gender === 'F') ? 50 : 0;
 
       if (ord.includes('मूल') || ord.includes('एकल')) return offset + 0;
@@ -1374,7 +1391,7 @@
         const fB = b.fatherId || '';
         if (fA !== fB) return fA.localeCompare(fB);
 
-        // Sort by Gender first (M before F) so sons come first, then daughters
+        // Sons first, then daughters
         if (a.gender !== b.gender) {
           return a.gender === 'M' ? -1 : 1;
         }
