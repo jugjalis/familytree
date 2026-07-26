@@ -42,14 +42,12 @@
       overflow-x: hidden;
     }
 
-    /* System Locked Content Hidden by Default */
     #protectedContent {
       display: none;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    /* Login Screen Overlay */
     #loginOverlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -134,7 +132,6 @@
       font-weight: bold;
     }
 
-    /* Header Styling */
     header {
       background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
       color: white;
@@ -1117,15 +1114,13 @@
   </div>
 
   <script>
-    // --- LOGIN USERS & PASSWORDS CONFIGURATION ---
     const USERS = {
-      "admin": "jugjali2026",  // Admin: full access
-      "guest": "jugjali123"    // Viewer: read-only
+      "admin": "jugjali2026",
+      "guest": "jugjali123"
     };
 
-    let currentUserRole = "viewer"; // "admin" or "viewer"
+    let currentUserRole = "viewer";
 
-    // --- INITIAL DEFAULT BACKUP DATA EMBEDDED ---
     const initialBackupData = {
       "version": "2.0",
       "members": [
@@ -1236,7 +1231,7 @@
         {"id":"Mmrzx9uzfda80v","fatherId":"M556612","name":"नरु पाण्डे","gender":"F","generation":6,"order":"एकल छोरी","motherName":"चन्द्रमाया जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxaech2pydr","fatherId":"M591171","name":"ईश्वर जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxb6ohfycvj","fatherId":"M591171","name":"किशोर जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
-        {"id":"Mmrzxc0mygk4rf","fatherId":"M591171","name":"तिलु शेर्पन्जा","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxc0mygk4rf","fatherId":"M591171","name":"तिलु शेर्pन्जा","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxcldpyth26","fatherId":"M591171","name":"टीका जुग्जाली","gender":"F","generation":6,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxd2gp77jb2","fatherId":"M591171","name":"रिमा जुग्जाली","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
         {"id":"Mmrzxdvgn5ovjb","fatherId":"M613240","name":"दलबहादुर जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
@@ -1272,7 +1267,6 @@
       "history": "<h3>१. जुग्जाली वंशको परिचय तथा उत्पत्ति</h3>\n      <p>जुग्जाली थर मगर समुदायभित्रको एक प्रमुख र ऐतिहासिक वंशज हो। हाम्रा पुर्खाहरूको मूल थलो म्याग्दी जिल्ला (बिम तथा आसपासका भेग) मानिन्छ। त्यहाँबाट फैलिँदै हाल देश तथा विदेशका विभिन्न स्थानहरूमा जुग्जाली बन्धुहरू बसोबास गर्दै आएका छन्।</p>\n      \n      <h3>२. कुलदेवता तथा देवाली पूजा परम्परा</h3>\n      <p>जुग्जाली कुलको मुख्य कुलदेवताको थान मूल थलोमा रहेको छ। कुलपूजा परम्परागत रीतिथिति अनुसार निश्चित समयको अन्तरमा (जस्तै: वैशाख/मङ्सिर पूर्णिमा) भव्य रूपमा मनाउने गरिन्छ।</p>\n\n      <h3>३. मुख्य ध्येय र वंशावली सङ्ग्रह</h3>\n      <p>आफ्नो पुर्खाको पहिचान, इतिहास, नाता-सम्बन्ध र सांस्कृतिक जगलाई जीवन्त राख्न यो डिजिटल वंशावली अभिलेख तयार पारिएको हो।</p>"
     };
 
-    // System State
     let members = [];
     let collapsedNodes = new Set();
     let historyData = "";
@@ -1352,17 +1346,21 @@
       return id;
     }
 
-    function getOrderRank(orderStr) {
+    // --- ENHANCED BIRTH ORDER SORTING (SONS FIRST, THEN DAUGHTERS) ---
+    function getOrderRank(orderStr, gender) {
       const ord = (orderStr || '').toLowerCase();
-      if (ord.includes('मूल') || ord.includes('एकल')) return 0;
-      if (ord.includes('जेठो') || ord.includes('जेठी')) return 1;
-      if (ord.includes('माइलो') || ord.includes('माइली')) return 2;
-      if (ord.includes('साइलो') || ord.includes('साइली') || ord.includes('साँहिलो')) return 3;
-      if (ord.includes('काइलो') || ord.includes('काइली') || ord.includes('काँहिलो')) return 4;
-      if (ord.includes('ठाइलो') || ord.includes('ठाइली') || ord.includes('ठाँहिलो')) return 5;
-      if (ord.includes('राहिलो') || ord.includes('राहिली') || ord.includes('राँहिलो')) return 6;
-      if (ord.includes('कान्छा') || ord.includes('कान्छी')) return 7;
-      return 99;
+      // If female, give them a higher base rank so sons always appear before daughters in the same family branch
+      const offset = (gender === 'F') ? 50 : 0;
+
+      if (ord.includes('मूल') || ord.includes('एकल')) return offset + 0;
+      if (ord.includes('जेठो') || ord.includes('जेठी')) return offset + 1;
+      if (ord.includes('माइलो') || ord.includes('माइली')) return offset + 2;
+      if (ord.includes('साइलो') || ord.includes('साइली') || ord.includes('साँहिलो')) return offset + 3;
+      if (ord.includes('काइलो') || ord.includes('काइली') || ord.includes('काँहिलो')) return offset + 4;
+      if (ord.includes('ठाइलो') || ord.includes('ठाइली') || ord.includes('ठाँहिलो')) return offset + 5;
+      if (ord.includes('राहिलो') || ord.includes('राहिली') || ord.includes('राँहिलो')) return offset + 6;
+      if (ord.includes('कान्छा') || ord.includes('कान्छी')) return offset + 7;
+      return offset + 99;
     }
 
     function getSortedMembers(rawList = null) {
@@ -1376,8 +1374,13 @@
         const fB = b.fatherId || '';
         if (fA !== fB) return fA.localeCompare(fB);
 
-        const rankA = getOrderRank(a.order);
-        const rankB = getOrderRank(b.order);
+        // Sort by Gender first (M before F) so sons come first, then daughters
+        if (a.gender !== b.gender) {
+          return a.gender === 'M' ? -1 : 1;
+        }
+
+        const rankA = getOrderRank(a.order, a.gender);
+        const rankB = getOrderRank(b.order, b.gender);
         if (rankA !== rankB) return rankA - rankB;
 
         return a.name.localeCompare(b.name, 'ne');
@@ -1723,7 +1726,6 @@
       scale = 1; panX = 0; panY = 0; updateTransform();
     }
 
-    // --- RENDER TREE VIEW ---
     function renderTree() {
       const wrapper = document.getElementById('treeWrapper');
       wrapper.innerHTML = '';
@@ -1740,7 +1742,7 @@
 
       const rootUl = document.createElement('ul');
 
-      roots.sort((a, b) => getOrderRank(a.order) - getOrderRank(b.order));
+      roots.sort((a, b) => getOrderRank(a.order, a.gender) - getOrderRank(b.order, b.gender));
 
       roots.forEach(root => {
         const li = buildTreeRecursive(root);
@@ -1764,7 +1766,10 @@
       const safeId = esc(member.id);
 
       const children = members.filter(m => m.fatherId === member.id);
-      children.sort((a, b) => getOrderRank(a.order) - getOrderRank(b.order));
+      children.sort((a, b) => {
+        if (a.gender !== b.gender) return a.gender === 'M' ? -1 : 1;
+        return getOrderRank(a.order, a.gender) - getOrderRank(b.order, b.gender);
+      });
 
       const isCollapsed = collapsedNodes.has(member.id);
 
@@ -1773,7 +1778,6 @@
         toggleBtnHtml = `<div class="collapse-toggle" onclick="toggleCollapse(event, '${safeId}')" title="${isCollapsed ? 'शाखा खोल्नुहोस्' : 'शाखा ढाक्नुहोस्'}">${isCollapsed ? '+' : '-'}</div>`;
       }
 
-      // Hide Action Buttons if Viewer
       let actionsHtml = '';
       if (currentUserRole === 'admin') {
         actionsHtml = `
@@ -1821,7 +1825,6 @@
       renderTree();
     }
 
-    // --- RENDER TABLE VIEW ---
     function renderTable(filteredData = null) {
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
@@ -2103,7 +2106,10 @@
       const descendants = [];
       function getDescendantsRecursive(parentId) {
         const children = members.filter(m => m.fatherId === parentId);
-        children.sort((a, b) => getOrderRank(a.order) - getOrderRank(b.order));
+        children.sort((a, b) => {
+          if (a.gender !== b.gender) return a.gender === 'M' ? -1 : 1;
+          return getOrderRank(a.order, a.gender) - getOrderRank(b.order, b.gender);
+        });
         children.forEach(child => {
           descendants.push(child);
           if (child.gender === 'M') getDescendantsRecursive(child.id);
