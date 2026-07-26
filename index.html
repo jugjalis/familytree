@@ -1,0 +1,2355 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+  <title>जुग्जाली वंशावली अभिलेख तथा पारिवारिक वृक्ष</title>
+  <!-- SheetJS Library for Native XLSX Export/Import -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <!-- html2canvas for Image Generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --secondary: #0d9488;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #cbd5e1;
+      --male-color: #2563eb;
+      --male-bg: #eff6ff;
+      --female-color: #db2777;
+      --female-bg: #fdf2f8;
+      --deceased-color: #475569;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Mukta', 'Kalimati', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Header Styling */
+    header {
+      background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+      color: white;
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo-area h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-area p {
+      font-size: 0.78rem;
+      color: #93c5fd;
+    }
+
+    .stats-bar {
+      display: flex;
+      gap: 10px;
+      background: rgba(255,255,255,0.12);
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      flex-wrap: wrap;
+    }
+
+    .stats-bar span {
+      font-weight: bold;
+      color: #fde047;
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      background: #16a34a;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: none;
+      z-index: 2000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Navigation Tabs */
+    nav {
+      background-color: white;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      padding: 0 10px;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      padding: 10px 14px;
+      background: none;
+      border: none;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover { color: var(--primary-light); }
+    .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
+
+    /* Main Content Layout */
+    main {
+      flex: 1;
+      padding: 12px;
+      max-width: 100%;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Controls Bar */
+    .controls-card {
+      background: white;
+      padding: 12px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border: 1px solid var(--border-color);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .search-nav-btn {
+      background: #f1f5f9;
+      border: 1px solid var(--border-color);
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .search-nav-btn:hover { background: #e2e8f0; }
+
+    .search-count {
+      font-size: 0.78rem;
+      font-weight: bold;
+      color: var(--primary);
+      white-space: nowrap;
+      min-width: 60px;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    @media (min-width: 768px) {
+      .btn-group { width: auto; }
+    }
+
+    .btn {
+      padding: 7px 11px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      font-size: 0.82rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-primary { background-color: var(--primary); color: white; }
+    .btn-primary:hover { background-color: #1d4ed8; }
+    .btn-secondary { background-color: #e2e8f0; color: var(--text-main); }
+    .btn-secondary:hover { background-color: #cbd5e1; }
+    .btn-success { background-color: #16a34a; color: white; }
+    .btn-success:hover { background-color: #15803d; }
+    .btn-word { background-color: #2b579a; color: white; }
+    .btn-word:hover { background-color: #1e395b; }
+
+    /* Zoom Controls Bar */
+    .zoom-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #e2e8f0;
+      padding: 3px 8px;
+      border-radius: 8px;
+    }
+
+    .zoom-btn {
+      background: white;
+      border: 1px solid var(--border-color);
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.85rem;
+    }
+
+    .zoom-btn:hover { background: #cbd5e1; }
+
+    /* Pan & Zoom Canvas Window */
+    .tree-viewport {
+      background: #f1f5f9;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      height: 68vh;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+    }
+
+    .tree-viewport:active { cursor: grabbing; }
+
+    .tree-pan-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      transform-origin: 0 0;
+      padding: 40px;
+      display: inline-block;
+      min-width: 100%;
+      text-align: center;
+      will-change: transform;
+    }
+
+    /* Tree Node Hierarchy */
+    .tf-tree {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .tf-tree ul {
+      display: flex;
+      padding-top: 20px;
+      position: relative;
+      justify-content: center;
+      margin: 0;
+      list-style: none;
+    }
+
+    .tf-tree li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding: 16px 6px 0 6px;
+    }
+
+    .tf-tree li::before, .tf-tree li::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 50%;
+      border-top: 2px solid #94a3b8;
+      width: 50%; height: 16px;
+    }
+
+    .tf-tree li::after {
+      right: auto; left: 50%;
+      border-left: 2px solid #94a3b8;
+    }
+
+    .tf-tree li:only-child::after, .tf-tree li:only-child::before { display: none; }
+    .tf-tree li:only-child { padding-top: 0; }
+    .tf-tree li:first-child::before, .tf-tree li:last-child::after { border: none; }
+    .tf-tree li:last-child::before { border-right: 2px solid #94a3b8; border-radius: 0 8px 0 0; }
+    .tf-tree li:first-child::after { border-radius: 8px 0 0 0; }
+
+    .tf-tree ul::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%;
+      border-left: 2px solid #94a3b8;
+      width: 0; height: 20px;
+    }
+
+    /* Member Card */
+    .member-card {
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      padding: 8px 10px;
+      min-width: 155px;
+      max-width: 190px;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+      position: relative;
+      z-index: 10;
+      transition: all 0.2s ease;
+      text-align: left;
+    }
+
+    .member-card.male { border-left: 4px solid var(--male-color); background-color: var(--male-bg); }
+    .member-card.female { border-left: 4px solid var(--female-color); background-color: var(--female-bg); }
+    .member-card.root-ancestor { border-top: 4px solid #f59e0b; }
+
+    .member-card.match-active {
+      animation: activeSearchPulse 1s infinite;
+      border-color: #dc2626 !important;
+      background-color: #fef2f2 !important;
+      box-shadow: 0 0 0 6px rgba(220, 38, 38, 0.4) !important;
+      z-index: 60;
+    }
+
+    .member-card.match-passive {
+      border-color: #d97706 !important;
+      background-color: #fef3c7 !important;
+    }
+
+    @keyframes activeSearchPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 3px;
+    }
+
+    .gen-badge {
+      font-size: 0.65rem;
+      background: #e2e8f0;
+      color: #334155;
+      padding: 1px 5px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .gender-icon.M { color: var(--male-color); font-weight: bold; font-size: 0.75rem; }
+    .gender-icon.F { color: var(--female-color); font-weight: bold; font-size: 0.75rem; }
+
+    .member-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      line-height: 1.2;
+      margin-bottom: 3px;
+      cursor: pointer;
+    }
+
+    .member-name:hover {
+      color: var(--primary-light);
+      text-decoration: underline;
+    }
+
+    .member-meta {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.25;
+    }
+
+    .member-actions {
+      margin-top: 6px;
+      padding-top: 5px;
+      border-top: 1px dashed rgba(0,0,0,0.1);
+      display: flex;
+      gap: 3px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      background: white;
+      border: 1px solid var(--border-color);
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 0.68rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .action-btn.add-child { background-color: #dcfce7; color: #15803d; border-color: #86efac; }
+    .action-btn.add-parent { background-color: #fef3c7; color: #b45309; border-color: #fde047; }
+    .action-btn.delete-btn { background-color: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+
+    .collapse-toggle {
+      position: absolute;
+      bottom: -11px; left: 50%;
+      transform: translateX(-50%);
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #1e293b; color: white;
+      border: 2px solid white;
+      font-size: 0.75rem; font-weight: bold;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 20;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    /* Table View Styling */
+    .table-container {
+      background: white;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      overflow-x: auto;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    table { width: 100%; border-collapse: collapse; text-align: left; min-width: 650px; }
+    th, td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
+    th { background-color: #f1f5f9; color: var(--text-main); font-weight: 700; }
+
+    /* Dashboard & Cards Styling */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    @media (min-width: 768px) {
+      .dashboard-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+    }
+
+    .dash-card {
+      background: white;
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dash-card h4 { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+    .dash-card .val { font-size: 1.5rem; font-weight: 800; color: var(--primary); }
+
+    .chart-box {
+      background: white;
+      padding: 15px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      margin-bottom: 15px;
+    }
+
+    .chart-box h3 { font-size: 1rem; margin-bottom: 12px; color: var(--primary); border-bottom: 2px solid #f1f5f9; padding-bottom: 6px; }
+
+    .progress-bar-wrapper { margin-bottom: 10px; }
+    .progress-info { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 3px; font-weight: 600; }
+    .progress-bg { background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--primary-light); border-radius: 5px; }
+
+    /* Relationship Calculator Card */
+    .rel-card {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    .rel-select-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 15px;
+    }
+
+    @media (min-width: 600px) {
+      .rel-select-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .autocomplete-wrap { position: relative; }
+
+    .autocomplete-list {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      max-height: 240px;
+      overflow-y: auto;
+      z-index: 200;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .autocomplete-item {
+      padding: 9px 12px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .autocomplete-item:last-child { border-bottom: none; }
+    .autocomplete-item:hover, .autocomplete-item.highlighted { background: #eff6ff; }
+    .autocomplete-item .ac-gen { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; }
+    .autocomplete-item.no-match { color: var(--text-muted); cursor: default; text-align: center; }
+    .autocomplete-item.no-match:hover { background: none; }
+
+    .rel-result-box {
+      background: #eff6ff;
+      border: 2px solid #3b82f6;
+      border-radius: 12px;
+      padding: 18px;
+      text-align: left;
+      margin-top: 15px;
+    }
+
+    .rel-result-title { font-size: 1.15rem; font-weight: 800; color: #1e3a8a; margin-bottom: 10px; border-bottom: 1px solid #bfdbfe; padding-bottom: 6px; }
+    
+    .rel-path-box {
+      background: white;
+      padding: 12px 15px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      margin-top: 10px;
+      font-size: 0.88rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    /* History / Article Editor Styling */
+    .history-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      max-width: 1000px;
+      margin: 0 auto;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .history-card h2 { font-size: 1.2rem; color: var(--primary); margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px; }
+    .history-card h3 { font-size: 1.05rem; color: #334155; margin-top: 15px; margin-bottom: 6px; }
+    .history-card p { margin-bottom: 12px; text-align: justify; color: #334155; }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 12px;
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 580px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      animation: modalSlide 0.2s ease-out;
+    }
+
+    @keyframes modalSlide {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1e293b 100%);
+      color: white;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .close-btn { 
+      background: rgba(255, 255, 255, 0.15); 
+      border: none; color: white; 
+      font-size: 1rem; font-weight: bold;
+      cursor: pointer; width: 30px; height: 30px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .modal-body { padding: 16px; max-height: 75vh; overflow-y: auto; }
+    .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+    @media (min-width: 500px) {
+      .form-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    .form-group label { font-size: 0.82rem; font-weight: 700; color: var(--text-main); }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.88rem; outline: none;
+    }
+
+    .modal-footer {
+      padding: 12px 16px;
+      background-color: #f8fafc;
+      border-top: 1px solid var(--border-color);
+      display: flex; justify-content: flex-end; gap: 8px;
+    }
+
+    .lineage-section { margin-bottom: 15px; }
+    .lineage-title {
+      font-size: 0.88rem; font-weight: 700; color: var(--primary);
+      border-bottom: 2px solid var(--border-color); padding-bottom: 4px; margin-bottom: 8px;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    .lineage-list { list-style: none; padding: 0; }
+    .lineage-item {
+      padding: 7px 10px; background: #f1f5f9; border-radius: 8px; margin-bottom: 5px;
+      display: flex; justify-content: space-between; align-items: center; cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .lineage-item.current-person { background: #fef3c7; border: 2px solid #f59e0b; font-weight: bold; }
+
+    @media print {
+      header, nav, .controls-card, .zoom-toolbar, .btn-group, .member-actions, .modal-overlay { display: none !important; }
+      body { background: white; }
+      .tree-viewport { height: auto; border: none; overflow: visible; }
+      .tree-pan-canvas { transform: none !important; position: static; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="toast">✓ सेभ भयो (Auto-saved)</div>
+
+  <!-- Header -->
+  <header>
+    <div class="logo-area">
+      <h1>🌳 जुग्जाली वंशावली अभिलेख तथा पारिवारिक वृक्ष</h1>
+      <p>पारिवारिक संरचना तथा जुग्जाली वंशज सङ्ग्रह प्रणाली (Offline System)</p>
+    </div>
+    <div class="stats-bar">
+      <div>कुल सदस्य: <span id="statTotal">0</span></div>
+      <div>कुल पुस्ता: <span id="statGen">0</span></div>
+      <div>छोरा: <span id="statSons">0</span></div>
+      <div>छोरीहरू: <span id="statDaughters">0</span></div>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav>
+    <button class="tab-btn active" onclick="switchTab('tree')">🌳 वंशावली नक्सा</button>
+    <button class="tab-btn" onclick="switchTab('table')">📋 तालिका विवरण</button>
+    <button class="tab-btn" onclick="switchTab('relation')">🔍 नाता खोज्ने</button>
+    <button class="tab-btn" onclick="switchTab('analytics')">📊 तथ्याङ्क तथा रिपोर्ट</button>
+      </nav>
+
+  <!-- Main Content -->
+  <main>
+    
+    <!-- Controls Bar -->
+    <div class="controls-card" id="mainControls">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="नाम लेखेर Enter थिच्दै जानुहोस्..." onkeydown="handleSearchKeyDown(event)" oninput="handleSearchInput()">
+        <button class="search-nav-btn" onclick="navigateSearchResult(-1)" title="अघिल्लो व्यक्ति">◀</button>
+        <button class="search-nav-btn" onclick="navigateSearchResult(1)" title="पछिल्लो व्यक्ति">▶</button>
+        <span class="search-count" id="searchCount"></span>
+      </div>
+
+      <!-- Zoom Controls -->
+      <div class="zoom-toolbar">
+        <span style="font-size:0.75rem; font-weight:bold; color:#475569;">Zoom:</span>
+        <button class="zoom-btn" onclick="zoomInButton()" title="Zoom In">🔍 +</button>
+        <button class="zoom-btn" onclick="zoomOutButton()" title="Zoom Out">🔍 -</button>
+        <button class="zoom-btn" onclick="resetZoom()" title="Reset View">↺ Reset</button>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="openAddModal()">➕ नयाँ सदस्य</button>
+        <button class="btn btn-word" onclick="exportToWord()">📄 Word (.docx)</button>
+        <button class="btn btn-success" style="background:#16a34a;" onclick="exportToXLSX()">📊 Excel (.xlsx)</button>
+        <button class="btn btn-secondary" onclick="triggerImport()">📥 Import</button>
+        <button class="btn btn-secondary" onclick="exportToJSON()">💾 Backup</button>
+        <input type="file" id="fileInput" accept=".xlsx, .csv, .json" style="display: none;" onchange="handleFileImport(event)">
+      </div>
+    </div>
+
+    <!-- TAB 1: Interactive Tree View -->
+    <div id="treeTab" class="tab-content active">
+      <div class="tree-viewport" id="viewport">
+        <div class="tree-pan-canvas" id="panCanvas">
+          <div class="tree-wrapper" id="treeWrapper"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Table View -->
+    <div id="tableTab" class="tab-content">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>पुरा नाम</th>
+              <th>पुस्ता</th>
+              <th>लिङ्ग</th>
+              <th>बुवाको नाम</th>
+              <th>आमाको नाम</th>
+              <th>श्रीमती/श्रीमान्</th>
+              <th>जन्म/अवस्था</th>
+              <th>क्रम</th>
+              <th>कार्य</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: Relationship Calculator -->
+    <div id="relationTab" class="tab-content">
+      <div class="rel-card">
+        <h2 style="color:var(--primary); font-size:1.15rem; margin-bottom:10px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">🔍 जुग्जाली नाता तथा साझा पूर्वज खोज प्रणाली</h2>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">कुनै दुई व्यक्ति छान्नुहोस् र नेपाली पारिवारिक परम्परा अनुसार उहाँहरू बीचको नाता तथा साझा पुर्खा (Common Ancestor) पत्ता लगाउनुहोस्।</p>
+        
+        <div class="rel-select-grid">
+          <div class="form-group">
+            <label>पहिलो व्यक्ति खोज्नुहोस् (व्यक्ति A):</label>
+            <div class="autocomplete-wrap">
+              <input type="text" id="relPersonASearch" placeholder="नाम टाइप गर्नुहोस्..." autocomplete="off"
+                oninput="handleRelSearchInput('A')" onfocus="handleRelSearchFocus('A')" onkeydown="handleRelSearchKeyDown(event,'A')">
+              <input type="hidden" id="relPersonA">
+              <div class="autocomplete-list" id="relPersonAList"></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>दोस्रो व्यक्ति खोज्नुहोस् (व्यक्ति B):</label>
+            <div class="autocomplete-wrap">
+              <input type="text" id="relPersonBSearch" placeholder="नाम टाइप गर्नुहोस्..." autocomplete="off"
+                oninput="handleRelSearchInput('B')" onfocus="handleRelSearchFocus('B')" onkeydown="handleRelSearchKeyDown(event,'B')">
+              <input type="hidden" id="relPersonB">
+              <div class="autocomplete-list" id="relPersonBList"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="relResult" class="rel-result-box" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Analytics & Dashboard -->
+    <div id="analyticsTab" class="tab-content">
+      <div class="dashboard-grid">
+        <div class="dash-card">
+          <h4>कुल वंशज दर्ता</h4>
+          <div class="val" id="dashTotal">0</div>
+        </div>
+        <div class="dash-card">
+          <h4>जीवित सदस्यहरू</h4>
+          <div class="val" style="color:#16a34a;" id="dashLiving">0</div>
+        </div>
+        <div class="dash-card">
+          <h4>दिवङ्गत पूर्वजहरू</h4>
+          <div class="val" style="color:#475569;" id="dashDeceased">0</div>
+        </div>
+        <div class="dash-card">
+          <h4>कुल पुस्ता (Generations)</h4>
+          <div class="val" style="color:#d97706;" id="dashMaxGen">0</div>
+        </div>
+      </div>
+
+      <div class="chart-box">
+        <h3>📊 पुस्ता अनुसार सदस्य सङ्ख्या विवरण (Generation Breakdown)</h3>
+        <div id="genProgressBars"></div>
+      </div>
+
+      <div class="chart-box">
+        <h3>👦👧 लिङ्ग तथा जन्म क्रम अनुसार विवरण</h3>
+        <div id="orderProgressBars"></div>
+      </div>
+    </div>
+
+    <!-- TAB 5: History & Kul Devata -->
+    <div id="historyTab" class="tab-content">
+      <div class="history-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:2px solid var(--border-color); padding-bottom:8px; flex-wrap:wrap; gap:10px;">
+          <h2 style="border:none; padding:0; margin:0;">📖 जुग्जाली वंशको उत्पत्ति, इतिहास तथा कुलदेवता विवरण</h2>
+          <button class="btn btn-primary" onclick="openHistoryEditModal()">✏️ सम्पादन गर्नुहोस्</button>
+        </div>
+        <div id="historyContentDisplay"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Add/Edit Member Modal -->
+  <div class="modal-overlay" id="memberModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">नयाँ जुग्जाली सदस्य प्रविष्टि</h3>
+        <button class="close-btn" onclick="closeModal()">✖</button>
+      </div>
+      <form id="memberForm" onsubmit="saveMember(event)">
+        <div class="modal-body">
+          <input type="hidden" id="memberId">
+          <div class="form-grid">
+
+            <div class="form-group full-width">
+              <label>बुवा (Father) / शाखा रोज्नुहोस्:</label>
+              <select id="fatherId" onchange="updateGenerationFromFather()">
+                <option value="">-- मूल पूर्वज (Root Ancestor - कुनै बाबु नभएको) --</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>पुरा नाम *:</label>
+              <input type="text" id="memberName" required placeholder="उदा: रामबहादुर जुग्जाली">
+            </div>
+
+            <div class="form-group">
+              <label>लिङ्ग (Gender) *:</label>
+              <select id="gender" required>
+                <option value="M">छोरा (Male - शाखा बढ्ने)</option>
+                <option value="F">छोरी (Female - शाखा नबढ्ने)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>पुस्ता (Generation):</label>
+              <input type="number" id="generation" min="1" value="1" required>
+            </div>
+
+            <div class="form-group">
+              <label>क्रम (Order):</label>
+              <select id="memberOrder">
+                <optgroup label="छोराहरूका लागि क्रम">
+                  <option value="एकल छोरो">एकल छोरो</option>
+                  <option value="जेठो">जेठो</option>
+                  <option value="माइलो">माइलो</option>
+                  <option value="साइलो">साइलो</option>
+                  <option value="काइलो">काइलो</option>
+                  <option value="ठाइलो">ठाइलो</option>
+                  <option value="राहिलो">राहिलो</option>
+                  <option value="कान्छाे">कान्छो</option>
+                </optgroup>
+                <optgroup label="छोरीहरूका लागि क्रम">
+                  <option value="एकल छोरी">एकल छोरी</option>
+                  <option value="जेठी छोरी">जेठी छोरी</option>
+                  <option value="माइली छोरी">माइली छोरी</option>
+                  <option value="साइली छोरी">साइली छोरी</option>
+                  <option value="काइली छोरी">काइली छोरी</option>
+                  <option value="ठाइली छोरी">ठाइली छोरी</option>
+                  <option value="राहिली छोरी">राहिली छोरी</option>
+                  <option value="कान्छी छोरी">कान्छी छोरी</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>आमाको नाम:</label>
+              <input type="text" id="motherName" placeholder="उदा: दिलमाया जुग्जाली">
+            </div>
+
+            <div class="form-group">
+              <label>श्रीमती / श्रीमान्‌को नाम:</label>
+              <input type="text" id="spouseName" placeholder="उदा: सीता जुग्जाली">
+            </div>
+
+            <div class="form-group">
+              <label>जन्म वर्ष / मिति (BS):</label>
+              <input type="text" id="birthYear" placeholder="उदा: २०३५ BS">
+            </div>
+
+            <div class="form-group">
+              <label>हालको अवस्था:</label>
+              <select id="status">
+                <option value="जीवित">जीवित</option>
+                <option value="दिवङ्गत">दिवङ्गत</option>
+              </select>
+            </div>
+
+            <div class="form-group full-width">
+              <label>कैफियत / छोटो विवरण:</label>
+              <textarea id="notes" rows="2" placeholder="ठेगाना, पेसा वा विशेष योगदान..."></textarea>
+            </div>
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">रद्द गर्नुहोस्</button>
+          <button type="submit" class="btn btn-primary">सुरक्षित गर्नुहोस् (Save)</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- History Edit Modal -->
+  <div class="modal-overlay" id="historyModal">
+    <div class="modal-card" style="max-width: 800px;">
+      <div class="modal-header">
+        <h3>जुग्जाली इतिहास सम्पादन</h3>
+        <button class="close-btn" onclick="closeHistoryModal()">✖</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>इतिहास तथा कुलदेवता विवरण (HTML/Text):</label>
+          <textarea id="historyInputText" rows="10" style="width:100%; font-size:0.9rem; padding:8px; line-height:1.5;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeHistoryModal()">रद्द गर्नुहोस्</button>
+        <button type="button" class="btn btn-primary" onclick="saveHistory()">सुरक्षित गर्नुहोस्</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Person Focus & Lineage Modal -->
+  <div class="modal-overlay" id="focusModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="focusModalTitle">व्यक्तिगत वंश विवरण</h3>
+        <button class="close-btn" onclick="closeFocusModal()">✖</button>
+      </div>
+      <div class="modal-body" id="focusModalBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeFocusModal()">बन्द गर्नुहोस्</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // System State
+    let members = [];
+    let collapsedNodes = new Set();
+    let historyData = "";
+
+    // Search Results Navigation State
+    let searchMatches = [];
+    let searchIndex = -1;
+
+    const defaultHistoryText = `
+      <h3>१. जुग्जाली वंशको परिचय तथा उत्पत्ति</h3>
+      <p>जुग्जाली थर मगर/पुन समुदायभित्रको एक प्रमुख र ऐतिहासिक वंशज हो। हाम्रा पुर्खाहरूको मूल थलो म्याग्दी जिल्ला (बिम तथा आसपासका भेग) मानिन्छ। त्यहाँबाट फैलिँदै हाल देश तथा विदेशका विभिन्न स्थानहरूमा जुग्जाली बन्धुहरू बसोबास गर्दै आएका छन्।</p>
+      
+      <h3>२. कुलदेवता तथा देवाली पूजा परम्परा</h3>
+      <p>जुग्जाली कुलको मुख्य कुलदेवताको मन्दिर/थान मूल थलोमा रहेको छ। कुलपूजा (देवाली) परम्परागत रीतिथिति अनुसार निश्चित समयको अन्तरमा (जस्तै: वैशाख/मङ्सिर पूर्णिमा) भव्य रूपमा मनाउने गरिन्छ।</p>
+
+      <h3>३. मुख्य ध्येय र वंशावली सङ्ग्रह</h3>
+      <p>आफ्नो पुर्खाको पहिचान, इतिहास, नाता-सम्बन्ध र सांस्कृतिक जगलाई जीवन्त राख्न यो डिजिटल वंशावली अभिलेख तयार पारिएको हो।</p>
+    `;
+
+    // Pan & Touch Zoom State Variables
+    let scale = 1;
+    let panX = 0;
+    let panY = 0;
+    let isDragging = false;
+    let startX, startY;
+    let dragThresholdMoved = false;
+
+    // Mobile Pinch-to-Zoom State Tracking
+    let lastPinchDist = null;
+    let lastPinchCenter = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadData();
+      renderAll();
+      setupPanAndZoom();
+    });
+
+    function esc(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[ch]));
+    }
+
+    function generateId() {
+      let id;
+      do {
+        id = 'M' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      } while (members.some(m => m.id === id));
+      return id;
+    }
+
+    function showToast(message = "✓ सेभ भयो (Auto-saved)") {
+      const toast = document.getElementById('toast');
+      toast.innerText = message;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2000);
+    }
+
+    function loadData() {
+      const saved = localStorage.getItem('vanshawali_db_v2');
+      if (saved) {
+        try { members = JSON.parse(saved); } catch (e) { members = []; }
+      } else { members = []; }
+
+      const savedHistory = localStorage.getItem('vanshawali_history_v1');
+      historyData = savedHistory || defaultHistoryText;
+    }
+
+    function saveData() {
+      localStorage.setItem('vanshawali_db_v2', JSON.stringify(members));
+      localStorage.setItem('vanshawali_history_v1', historyData);
+      updateStats();
+      showToast();
+    }
+
+    function renderAll() {
+      updateStats();
+      populateFatherDropdown();
+      populateRelationDropdowns();
+      renderTree();
+      renderTable();
+      renderAnalytics();
+      renderHistory();
+    }
+
+    function updateStats() {
+      document.getElementById('statTotal').innerText = members.length;
+      const maxGen = members.reduce((max, m) => Math.max(max, parseInt(m.generation) || 1), members.length > 0 ? 1 : 0);
+      document.getElementById('statGen').innerText = maxGen;
+      document.getElementById('statSons').innerText = members.filter(m => m.gender === 'M').length;
+      document.getElementById('statDaughters').innerText = members.filter(m => m.gender === 'F').length;
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+      const controls = document.getElementById('mainControls');
+      if (tabName === 'tree') {
+        controls.style.display = 'flex';
+        document.querySelectorAll('.tab-btn')[0].classList.add('active');
+        document.getElementById('treeTab').classList.add('active');
+      } else if (tabName === 'table') {
+        controls.style.display = 'flex';
+        document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        document.getElementById('tableTab').classList.add('active');
+      } else if (tabName === 'relation') {
+        controls.style.display = 'none';
+        document.querySelectorAll('.tab-btn')[2].classList.add('active');
+        document.getElementById('relationTab').classList.add('active');
+        populateRelationDropdowns();
+      } else if (tabName === 'analytics') {
+        controls.style.display = 'none';
+        document.querySelectorAll('.tab-btn')[3].classList.add('active');
+        document.getElementById('analyticsTab').classList.add('active');
+        renderAnalytics();
+      } else if (tabName === 'history') {
+        controls.style.display = 'none';
+        document.querySelectorAll('.tab-btn')[4].classList.add('active');
+        document.getElementById('historyTab').classList.add('active');
+      }
+    }
+
+    function populateFatherDropdown() {
+      const select = document.getElementById('fatherId');
+      select.innerHTML = '<option value="">-- मूल पूर्वज (Root Ancestor - कुनै बाबु नभएको) --</option>';
+      
+      const maleMembers = members.filter(m => m.gender === 'M');
+      maleMembers.sort((a, b) => a.generation - b.generation || a.name.localeCompare(b.name));
+
+      maleMembers.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m.id;
+        opt.innerText = `[पुस्ता ${m.generation}] ${m.name} (ID: ${m.id})`;
+        select.appendChild(opt);
+      });
+    }
+
+    function populateRelationDropdowns() {
+      ['A', 'B'].forEach(which => {
+        const hidden = document.getElementById('relPerson' + which);
+        const search = document.getElementById('relPerson' + which + 'Search');
+        if (!hidden.value) return;
+        const person = members.find(m => m.id === hidden.value);
+        if (!person) {
+          hidden.value = '';
+          search.value = '';
+        } else {
+          search.value = `[पुस्ता ${person.generation}] ${person.name}`;
+        }
+      });
+    }
+
+    function relMatchList(query) {
+      const sorted = [...members].sort((a, b) => a.generation - b.generation || a.name.localeCompare(b.name, 'ne'));
+      const q = query.trim().toLowerCase();
+      if (!q) return sorted;
+      return sorted.filter(m => (m.name || '').toLowerCase().includes(q));
+    }
+
+    function renderRelList(which) {
+      const searchEl = document.getElementById('relPerson' + which + 'Search');
+      const listEl = document.getElementById('relPerson' + which + 'List');
+      const matches = relMatchList(searchEl.value).slice(0, 30);
+
+      if (members.length === 0) {
+        listEl.innerHTML = `<div class="autocomplete-item no-match">कुनै सदस्य दर्ता भएको छैन</div>`;
+      } else if (matches.length === 0) {
+        listEl.innerHTML = `<div class="autocomplete-item no-match">कुनै मिल्दो नाम भेटिएन</div>`;
+      } else {
+        listEl.innerHTML = matches.map((m, i) => `
+          <div class="autocomplete-item${i === 0 ? ' highlighted' : ''}" data-id="${esc(m.id)}"
+               onmousedown="event.preventDefault(); selectRelPerson('${which}', '${esc(m.id)}')">
+            <span>${esc(m.name)}</span>
+            <span class="ac-gen">पुस्ता ${esc(m.generation)}</span>
+          </div>
+        `).join('');
+      }
+      listEl.style.display = 'block';
+    }
+
+    function handleRelSearchInput(which) {
+      document.getElementById('relPerson' + which).value = '';
+      renderRelList(which);
+      calculateRelationship();
+    }
+
+    function handleRelSearchFocus(which) {
+      renderRelList(which);
+    }
+
+    function selectRelPerson(which, id) {
+      const person = members.find(m => m.id === id);
+      if (!person) return;
+      document.getElementById('relPerson' + which).value = id;
+      document.getElementById('relPerson' + which + 'Search').value = `[पुस्ता ${person.generation}] ${person.name}`;
+      document.getElementById('relPerson' + which + 'List').style.display = 'none';
+      calculateRelationship();
+    }
+
+    function handleRelSearchKeyDown(event, which) {
+      const listEl = document.getElementById('relPerson' + which + 'List');
+      if (event.key === 'Escape') {
+        listEl.style.display = 'none';
+        return;
+      }
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      const first = listEl.querySelector('.autocomplete-item[data-id]');
+      if (first) selectRelPerson(which, first.dataset.id);
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.autocomplete-wrap')) {
+        document.querySelectorAll('.autocomplete-list').forEach(l => l.style.display = 'none');
+      }
+    });
+
+    function updateGenerationFromFather() {
+      const fatherId = document.getElementById('fatherId').value;
+      if (fatherId) {
+        const father = members.find(m => m.id === fatherId);
+        if (father) {
+          document.getElementById('generation').value = parseInt(father.generation) + 1;
+        }
+      } else {
+        document.getElementById('generation').value = 1;
+      }
+    }
+
+    // --- ENHANCED UNIVERSAL TOUCH & MOUSE DRAG/ZOOM ENGINE ---
+    function setupPanAndZoom() {
+      const viewport = document.getElementById('viewport');
+      updateTransform();
+
+      viewport.addEventListener('mousedown', (e) => {
+        if (e.target.closest('.action-btn') || e.target.closest('.collapse-toggle')) return;
+        isDragging = true;
+        dragThresholdMoved = false;
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const dx = Math.abs(e.clientX - (startX + panX));
+        const dy = Math.abs(e.clientY - (startY + panY));
+        if (dx > 4 || dy > 4) { dragThresholdMoved = true; }
+
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        updateTransform();
+      });
+
+      window.addEventListener('mouseup', () => { 
+        isDragging = false; 
+      });
+
+      viewport.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const rect = viewport.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const zoomFactor = e.deltaY < 0 ? 1.15 : 0.88;
+        const newScale = Math.min(Math.max(0.15, scale * zoomFactor), 3.5);
+
+        panX = mouseX - (mouseX - panX) * (newScale / scale);
+        panY = mouseY - (mouseY - panY) * (newScale / scale);
+        scale = newScale;
+
+        updateTransform();
+      }, { passive: false });
+
+      viewport.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          if (e.target.closest('.action-btn') || e.target.closest('.collapse-toggle')) return;
+          isDragging = true;
+          dragThresholdMoved = false;
+          startX = e.touches[0].clientX - panX;
+          startY = e.touches[0].clientY - panY;
+        } else if (e.touches.length === 2) {
+          isDragging = false;
+          dragThresholdMoved = true;
+          const rect = viewport.getBoundingClientRect();
+          const t1 = e.touches[0];
+          const t2 = e.touches[1];
+
+          lastPinchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+          lastPinchCenter = {
+            x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+            y: ((t1.clientY + t2.clientY) / 2) - rect.top
+          };
+        }
+      }, { passive: false });
+
+      viewport.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 1 && isDragging) {
+          e.preventDefault();
+          const dx = Math.abs(e.touches[0].clientX - (startX + panX));
+          const dy = Math.abs(e.touches[0].clientY - (startY + panY));
+          if (dx > 4 || dy > 4) { dragThresholdMoved = true; }
+
+          panX = e.touches[0].clientX - startX;
+          panY = e.touches[0].clientY - startY;
+          updateTransform();
+        } else if (e.touches.length === 2) {
+          e.preventDefault();
+          dragThresholdMoved = true;
+          const rect = viewport.getBoundingClientRect();
+          const t1 = e.touches[0];
+          const t2 = e.touches[1];
+
+          const currentDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+          const currentCenter = {
+            x: ((t1.clientX + t2.clientX) / 2) - rect.left,
+            y: ((t1.clientY + t2.clientY) / 2) - rect.top
+          };
+
+          if (lastPinchDist && lastPinchCenter) {
+            const zoomRatio = currentDist / lastPinchDist;
+            const newScale = Math.min(Math.max(0.15, scale * zoomRatio), 3.5);
+
+            panX = currentCenter.x - (lastPinchCenter.x - panX) * (newScale / scale);
+            panY = currentCenter.y - (lastPinchCenter.y - panY) * (newScale / scale);
+            scale = newScale;
+
+            updateTransform();
+          }
+
+          lastPinchDist = currentDist;
+          lastPinchCenter = currentCenter;
+        }
+      }, { passive: false });
+
+      viewport.addEventListener('touchend', (e) => {
+        if (e.touches.length < 2) {
+          lastPinchDist = null;
+          lastPinchCenter = null;
+        }
+        if (e.touches.length === 0) {
+          isDragging = false;
+        }
+      });
+    }
+
+    function handleCardClick(event, memberId) {
+      if (!dragThresholdMoved) {
+        openFocusModal(memberId);
+      }
+    }
+
+    function updateTransform() {
+      const canvas = document.getElementById('panCanvas');
+      canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+    }
+
+    function zoomInButton() {
+      const viewport = document.getElementById('viewport');
+      const rect = viewport.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const newScale = Math.min(scale * 1.25, 3.5);
+      panX = centerX - (centerX - panX) * (newScale / scale);
+      panY = centerY - (centerY - panY) * (newScale / scale);
+      scale = newScale;
+      updateTransform();
+    }
+
+    function zoomOutButton() {
+      const viewport = document.getElementById('viewport');
+      const rect = viewport.getBoundingClientRect();
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      
+      const newScale = Math.max(scale * 0.8, 0.15);
+      panX = centerX - (centerX - panX) * (newScale / scale);
+      panY = centerY - (centerY - panY) * (newScale / scale);
+      scale = newScale;
+      updateTransform();
+    }
+
+    function resetZoom() {
+      scale = 1; panX = 0; panY = 0; updateTransform();
+    }
+
+    // --- RENDER TREE VIEW ---
+    function renderTree() {
+      const wrapper = document.getElementById('treeWrapper');
+      wrapper.innerHTML = '';
+
+      const roots = members.filter(m => !m.fatherId || !members.some(parent => parent.id === m.fatherId));
+
+      if (roots.length === 0) {
+        wrapper.innerHTML = '<div style="padding: 40px 20px; color: #64748b;"><h3>जुग्जाली वंशावली विवरण खाली छ।</h3><p style="margin-top:8px;">कृपया <strong>"नयाँ सदस्य"</strong> थपेर वा <strong>Import</strong> गरेर सुरु गर्नुहोस्।</p></div>';
+        return;
+      }
+
+      const treeContainer = document.createElement('div');
+      treeContainer.className = 'tf-tree';
+
+      const rootUl = document.createElement('ul');
+
+      roots.forEach(root => {
+        const li = buildTreeRecursive(root);
+        rootUl.appendChild(li);
+      });
+
+      treeContainer.appendChild(rootUl);
+      wrapper.appendChild(treeContainer);
+    }
+
+    function buildTreeRecursive(member) {
+      const li = document.createElement('li');
+
+      const card = document.createElement('div');
+      card.className = `member-card ${member.gender === 'M' ? 'male' : 'female'} ${!member.fatherId ? 'root-ancestor' : ''}`;
+      card.id = `card-${member.id}`;
+
+      const genderSymbol = member.gender === 'M' ? '♂ छोरा' : '♀ छोरी';
+      const spouseText = member.spouseName ? `<br>💍 ${esc(member.spouseName)}` : '';
+      const birthText = member.birthYear ? ` (${esc(member.birthYear)})` : '';
+      const safeId = esc(member.id);
+
+      const children = members.filter(m => m.fatherId === member.id);
+      const isCollapsed = collapsedNodes.has(member.id);
+
+      let toggleBtnHtml = '';
+      if (member.gender === 'M' && children.length > 0) {
+        toggleBtnHtml = `<div class="collapse-toggle" onclick="toggleCollapse(event, '${safeId}')" title="${isCollapsed ? 'शाखा खोल्नुहोस्' : 'शाखा ढाक्नुहोस्'}">${isCollapsed ? '+' : '-'}</div>`;
+      }
+
+      card.innerHTML = `
+        <div class="card-header">
+          <span class="gen-badge">पुस्ता ${esc(member.generation)}</span>
+          <span class="gender-icon ${member.gender}">${genderSymbol}</span>
+        </div>
+        <div class="member-name" onclick="handleCardClick(event, '${safeId}')" title="अघिल्ला र पछिल्ला पुस्ताहरू हेर्न थिच्नुहोस्">${esc(member.name)}</div>
+        <div class="member-meta" onclick="handleCardClick(event, '${safeId}')">
+          ${member.order ? '• ' + esc(member.order) : ''} ${birthText}
+          ${spouseText}
+        </div>
+        <div class="member-actions">
+          ${member.gender === 'M' ? `<button class="action-btn add-child" onclick="openAddModalForParent('${safeId}')" title="छोराछोरी थप्नुहोस्">+ सन्तति</button>` : ''}
+          ${!member.fatherId ? `<button class="action-btn add-parent" onclick="addOlderAncestor('${safeId}')" title="माथिल्लो पूर्वज/बुवा थप्नुहोस्">+ पूर्वज</button>` : ''}
+          <button class="action-btn" onclick="openEditModal('${safeId}')">✏️</button>
+          <button class="action-btn delete-btn" onclick="deleteMember('${safeId}')" title="हटाउनुहोस्">🗑️</button>
+        </div>
+        ${toggleBtnHtml}
+      `;
+
+      li.appendChild(card);
+
+      if (member.gender === 'M' && children.length > 0 && !isCollapsed) {
+        const ul = document.createElement('ul');
+        children.forEach(child => {
+          const childLi = buildTreeRecursive(child);
+          ul.appendChild(childLi);
+        });
+        li.appendChild(ul);
+      }
+
+      return li;
+    }
+
+    function toggleCollapse(event, memberId) {
+      event.stopPropagation();
+      if (collapsedNodes.has(memberId)) { collapsedNodes.delete(memberId); }
+      else { collapsedNodes.add(memberId); }
+      renderTree();
+    }
+
+    // --- RENDER TABLE VIEW (SORTED GENERATION-WISE) ---
+    function renderTable(filteredData = null) {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+
+      // Sort data generation-wise (1, 2, 3...)
+      const rawData = filteredData || members;
+      const dataToRender = [...rawData].sort((a, b) => 
+        (parseInt(a.generation) || 1) - (parseInt(b.generation) || 1) || 
+        (a.fatherId || '').localeCompare(b.fatherId || '') || 
+        a.name.localeCompare(b.name, 'ne')
+      );
+
+      if (dataToRender.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:20px; color:#64748b;">कुनै विवरण उपलब्ध छैन।</td></tr>';
+        return;
+      }
+
+      dataToRender.forEach(m => {
+        const father = members.find(f => f.id === m.fatherId);
+        const fatherName = father ? esc(father.name) : '-';
+        const safeId = esc(m.id);
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${safeId}</strong></td>
+          <td><strong style="cursor:pointer; color:var(--primary);" onclick="openFocusModal('${safeId}')">${esc(m.name)}</strong></td>
+          <td><span class="gen-badge">पुस्ता ${esc(m.generation)}</span></td>
+          <td><span class="gender-icon ${m.gender}">${m.gender === 'M' ? 'छोरा' : 'छोरी'}</span></td>
+          <td>${fatherName}</td>
+          <td>${esc(m.motherName) || '-'}</td>
+          <td>${esc(m.spouseName) || '-'}</td>
+          <td>${esc(m.birthYear) || ''} (${esc(m.status) || 'जीवित'})</td>
+          <td>${esc(m.order) || '-'}</td>
+          <td>
+            <button class="action-btn" onclick="openEditModal('${safeId}')">✏️ सम्पादन</button>
+            <button class="action-btn delete-btn" onclick="deleteMember('${safeId}')">🗑️ हटाउनुहोस्</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // --- RESTRUCTURED NEPALI KINSHIP RELATIONSHIP CALCULATOR ---
+    function calculateRelationship() {
+      const idA = document.getElementById('relPersonA').value;
+      const idB = document.getElementById('relPersonB').value;
+      const box = document.getElementById('relResult');
+
+      if (!idA || !idB) {
+        box.style.display = 'none';
+        return;
+      }
+
+      if (idA === idB) {
+        box.innerHTML = `<div class="rel-result-title">⚠️ एउटै व्यक्ति छान्नुभयो!</div><p style="color:#64748b;">कृपया दुई फरक-फरक सदस्यहरू रोज्नुहोस्।</p>`;
+        box.style.display = 'block';
+        return;
+      }
+
+      const pA = members.find(m => m.id === idA);
+      const pB = members.find(m => m.id === idB);
+
+      const chainA = [];
+      let curA = pA;
+      while (curA) {
+        chainA.push(curA);
+        curA = members.find(m => m.id === curA.fatherId);
+      }
+
+      const chainB = [];
+      let curB = pB;
+      while (curB) {
+        chainB.push(curB);
+        curB = members.find(m => m.id === curB.fatherId);
+      }
+
+      let commonAncestor = null;
+      let distA = -1;
+      let distB = -1;
+
+      for (let i = 0; i < chainA.length; i++) {
+        const foundIndex = chainB.findIndex(m => m.id === chainA[i].id);
+        if (foundIndex !== -1) {
+          commonAncestor = chainA[i];
+          distA = i;
+          distB = foundIndex;
+          break;
+        }
+      }
+
+      if (!commonAncestor) {
+        box.innerHTML = `<div class="rel-result-title">❓ साझा पूर्वज भेटिएन</div><p>"${esc(pA.name)}" र "${esc(pB.name)}" को यो प्रणालीमा कुनै साझा बाबु/पुर्खा भेटिएन।</p>`;
+        box.style.display = 'block';
+        return;
+      }
+
+      let relTermAtoB = "";
+      let relTermBtoA = "";
+
+      const orderA = pA.order || "";
+      const orderB = pB.order || "";
+
+      if (distA === 0) {
+        if (distB === 1) {
+          relTermAtoB = pA.gender === 'M' ? "बुवा (बाबु)" : "आमा";
+          relTermBtoA = pB.gender === 'M' ? "छोरा" : "छोरी";
+        } else if (distB === 2) {
+          relTermAtoB = pA.gender === 'M' ? "हजुरबुवा (बाजे)" : "हजुरआमा (बजै)";
+          relTermBtoA = pB.gender === 'M' ? "नाति" : "नातिनी";
+        } else if (distB === 3) {
+          relTermAtoB = pA.gender === 'M' ? "जिजुबाजे" : "जिजुबजै";
+          relTermBtoA = pB.gender === 'M' ? "जिजुनाति" : "जिजुनातिनी";
+        } else {
+          relTermAtoB = `${distB} पुस्ता माथिको पूर्वज`;
+          relTermBtoA = `${distB} पुस्ता तलको सन्तति`;
+        }
+      } 
+      else if (distB === 0) {
+        if (distA === 1) {
+          relTermAtoB = pA.gender === 'M' ? "छोरा" : "छोरी";
+          relTermBtoA = pB.gender === 'M' ? "बुवा (बाबु)" : "आमा";
+        } else if (distA === 2) {
+          relTermAtoB = pA.gender === 'M' ? "नाति" : "नातिनी";
+          relTermBtoA = pB.gender === 'M' ? "हजुरबुवा (बाजे)" : "हजुरआमा (बजै)";
+        } else if (distA === 3) {
+          relTermAtoB = pA.gender === 'M' ? "जिजुनाति" : "जिजुनातिनी";
+          relTermBtoA = pB.gender === 'M' ? "जिजुबाजे" : "जिजुबजै";
+        } else {
+          relTermAtoB = `${distA} पुस्ता तलको सन्तति`;
+          relTermBtoA = `${distA} पुस्ता माथिको पूर्वज`;
+        }
+      }
+      else if (distA === 1 && distB === 1) {
+        if (pA.gender === 'M' && pB.gender === 'M') {
+          relTermAtoB = "सहोदर दाजु/भाइ"; relTermBtoA = "सहोदर दाजु/भाइ";
+        } else if (pA.gender === 'M' && pB.gender === 'F') {
+          relTermAtoB = "दाजु/भाइ"; relTermBtoA = "दिदी/बहिनी";
+        } else if (pA.gender === 'F' && pB.gender === 'M') {
+          relTermAtoB = "दिदी/बहिनी"; relTermBtoA = "दाजु/भाइ";
+        } else {
+          relTermAtoB = "सहोदर दिदी/बहिनी"; relTermBtoA = "सहोदर दिदी/बहिनी";
+        }
+      }
+      else if (distA === 1 && distB === 2) {
+        if (pA.gender === 'M') {
+          relTermAtoB = orderA.includes('जेठो') ? "जेठाबा (बडाबा)" : (orderA.includes('माइलो') ? "माइला काका" : "काका/बडाबा");
+        } else { relTermAtoB = "फुपू"; }
+        relTermBtoA = pB.gender === 'M' ? "भतिज" : "भतिजी";
+      }
+      else if (distA === 2 && distB === 1) {
+        relTermAtoB = pA.gender === 'M' ? "भतिज" : "भतिजी";
+        if (pB.gender === 'M') {
+          relTermBtoA = orderB.includes('जेठो') ? "जेठाबा (बडाबा)" : "काका/बडाबा";
+        } else { relTermBtoA = "फुपू"; }
+      }
+      else if (distA === 2 && distB === 2) {
+        if (pA.gender === 'M' && pB.gender === 'M') {
+          relTermAtoB = "खलकका दाजु/भाइ"; relTermBtoA = "खलकका दाजु/भाइ";
+        } else {
+          relTermAtoB = "खलकका दाजुभाइ/दिदीबहिनी"; relTermBtoA = "खलकका दाजुभाइ/दिदीबहिनी";
+        }
+      }
+      else {
+        if (distA === distB) {
+          relTermAtoB = `${distA} औँ पुस्ताका खलकका दाजुभाइ`;
+          relTermBtoA = `${distB} औँ पुस्ताका खलकका दाजुभाइ`;
+        } else if (distA < distB) {
+          relTermAtoB = `पुस्तागत काका/अग्रज नाता`;
+          relTermBtoA = `पुस्तागत भतिज/अनुज नाता`;
+        } else {
+          relTermAtoB = `पुस्तागत भतिज/अनुज नाता`;
+          relTermBtoA = `पुस्तागत काका/अग्रज नाता`;
+        }
+      }
+
+      box.innerHTML = `
+        <div class="rel-result-title">🤝 नाता सम्बन्धको नतिजा:</div>
+        <div style="font-size:1.05rem; line-height:1.7; color:#0f172a;">
+          📌 <strong>${esc(pA.name)}</strong> हुनुहुन्छ: <span style="color:#2563eb; font-weight:bold;">"${esc(relTermAtoB)}"</span> (${esc(pB.name)} को)<br>
+          📌 <strong>${esc(pB.name)}</strong> हुनुहुन्छ: <span style="color:#0d9488; font-weight:bold;">"${esc(relTermBtoA)}"</span> (${esc(pA.name)} को)
+        </div>
+        
+        <div class="rel-path-box">
+          👑 <strong>साझा पूर्वज (Common Ancestor):</strong> <span style="color:#b45309; font-weight:bold;">[पुस्ता ${esc(commonAncestor.generation)}] ${esc(commonAncestor.name)}</span><br>
+          🌱 <strong>नाता जोडिएको वंशावली रेखा:</strong><br>
+          <span style="font-size:0.85rem; color:#475569;">
+            ${esc(pA.name)} ${distA > 0 ? '➔ (पूर्वजहरू: ' + chainA.slice(1, distA).map(m => esc(m.name)).join(' ➔ ') + ')' : ''} ➔ 
+            <strong style="color:#1e3a8a;">[साझा पुर्खा: ${esc(commonAncestor.name)}]</strong> 
+            ${distB > 0 ? '⬅️ (सन्ततिहरू: ' + chainB.slice(1, distB).map(m => esc(m.name)).reverse().join(' ⬅️ ') + ')' : ''} ⬅️ ${esc(pB.name)}
+          </span>
+        </div>
+      `;
+      box.style.display = 'block';
+    }
+
+    // --- RENDER ANALYTICS DASHBOARD ---
+    function renderAnalytics() {
+      document.getElementById('dashTotal').innerText = members.length;
+      document.getElementById('dashLiving').innerText = members.filter(m => m.status === 'जीवित' || !m.status).length;
+      document.getElementById('dashDeceased').innerText = members.filter(m => m.status === 'दिवङ्गत').length;
+      
+      const maxGen = members.reduce((max, m) => Math.max(max, parseInt(m.generation) || 1), members.length > 0 ? 1 : 0);
+      document.getElementById('dashMaxGen').innerText = maxGen;
+
+      const genContainer = document.getElementById('genProgressBars');
+      genContainer.innerHTML = '';
+
+      for (let g = 1; g <= maxGen; g++) {
+        const count = members.filter(m => parseInt(m.generation) === g).length;
+        const pct = members.length > 0 ? Math.round((count / members.length) * 100) : 0;
+
+        genContainer.innerHTML += `
+          <div class="progress-bar-wrapper">
+            <div class="progress-info">
+              <span>पुस्ता ${g}</span>
+              <span>${count} जना (${pct}%)</span>
+            </div>
+            <div class="progress-bg">
+              <div class="progress-fill" style="width: ${pct}%;"></div>
+            </div>
+          </div>
+        `;
+      }
+
+      const orderContainer = document.getElementById('orderProgressBars');
+      const sons = members.filter(m => m.gender === 'M').length;
+      const daughters = members.filter(m => m.gender === 'F').length;
+
+      orderContainer.innerHTML = `
+        <div class="progress-bar-wrapper">
+          <div class="progress-info"><span>छोरा (पुरुष वंशज)</span><span>${sons} जना</span></div>
+          <div class="progress-bg"><div class="progress-fill" style="width: ${members.length > 0 ? (sons/members.length)*100 : 0}%; background:#2563eb;"></div></div>
+        </div>
+        <div class="progress-bar-wrapper">
+          <div class="progress-info"><span>छोरीहरू</span><span>${daughters} जना</span></div>
+          <div class="progress-bg"><div class="progress-fill" style="width: ${members.length > 0 ? (daughters/members.length)*100 : 0}%; background:#db2777;"></div></div>
+        </div>
+      `;
+    }
+
+    // --- RENDER HISTORY & EDIT ---
+    function renderHistory() {
+      document.getElementById('historyContentDisplay').innerHTML = historyData;
+    }
+
+    function openHistoryEditModal() {
+      document.getElementById('historyInputText').value = historyData;
+      document.getElementById('historyModal').style.display = 'flex';
+    }
+
+    function closeHistoryModal() {
+      document.getElementById('historyModal').style.display = 'none';
+    }
+
+    function saveHistory() {
+      historyData = document.getElementById('historyInputText').value.trim();
+      saveData();
+      renderHistory();
+      closeHistoryModal();
+      showToast("इतिहास विवरण सेभ भयो!");
+    }
+
+    // --- LINEAGE / FOCUS MODAL ---
+    function openFocusModal(personId) {
+      const person = members.find(m => m.id === personId);
+      if (!person) return;
+
+      document.getElementById('focusModalTitle').innerText = `"${person.name}" को शाखा विवरण`;
+
+      const ancestors = [];
+      let currentParentId = person.fatherId;
+      while (currentParentId) {
+        const parent = members.find(m => m.id === currentParentId);
+        if (parent) {
+          ancestors.unshift(parent);
+          currentParentId = parent.fatherId;
+        } else break;
+      }
+
+      const descendants = [];
+      function getDescendantsRecursive(parentId) {
+        const children = members.filter(m => m.fatherId === parentId);
+        children.forEach(child => {
+          descendants.push(child);
+          if (child.gender === 'M') getDescendantsRecursive(child.id);
+        });
+      }
+      getDescendantsRecursive(person.id);
+
+      let html = `<div class="lineage-section"><div class="lineage-title">⬆️ अघिल्लो पुस्ता / पूर्वजहरू (Ancestors)</div>`;
+      if (ancestors.length === 0) {
+        html += `<p style="font-size:0.8rem; color:#64748b; padding-left:8px;">माथिल्लो पूर्वजको कुनै विवरण छैन (यो मूल पूर्वज हुनुहुन्छ)।</p>`;
+      } else {
+        html += `<ul class="lineage-list">`;
+        ancestors.forEach(a => {
+          html += `<li class="lineage-item" onclick="openFocusModal('${esc(a.id)}')">
+            <span><strong>[पुस्ता ${esc(a.generation)}]</strong> ${esc(a.name)} ${a.spouseName ? '(श्रीमती: ' + esc(a.spouseName) + ')' : ''}</span>
+            <span class="gen-badge">${esc(a.order) || 'पूर्वज'}</span>
+          </li>`;
+        });
+        html += `</ul>`;
+      }
+      html += `</div>`;
+
+      html += `<div class="lineage-section"><div class="lineage-title">🎯 छानिएको व्यक्ति (Selected Person)</div>
+        <div class="lineage-item current-person">
+          <div>
+            <div style="font-size:0.95rem;"><strong>[पुस्ता ${esc(person.generation)}] ${esc(person.name)}</strong></div>
+            <div style="font-size:0.78rem; color:#475569; margin-top:2px;">
+              आमा: ${esc(person.motherName) || 'नखुलेको'} | श्रीमती/श्रीमान्: ${esc(person.spouseName) || 'नखुलेको'} | अवस्था: ${esc(person.status) || 'जीवित'}
+            </div>
+          </div>
+          <span class="gen-badge">${esc(person.order) || ''}</span>
+        </div></div>`;
+
+      html += `<div class="lineage-section"><div class="lineage-title">⬇️ पछिल्लो पुस्ता / सन्ततिहरू (Descendants)</div>`;
+      if (descendants.length === 0) {
+        html += `<p style="font-size:0.8rem; color:#64748b; padding-left:8px;">उक्त व्यक्तिको तल कुनै सन्तति/छोराछोरीको दर्ता भएको छैन।</p>`;
+      } else {
+        html += `<ul class="lineage-list">`;
+        descendants.forEach(d => {
+          const father = members.find(f => f.id === d.fatherId);
+          html += `<li class="lineage-item" onclick="openFocusModal('${esc(d.id)}')">
+            <span><strong>[पुस्ता ${esc(d.generation)}]</strong> ${esc(d.name)} <span style="font-size:0.75rem; color:#64748b;">(${d.gender === 'M' ? 'छोरा' : 'छोरी'}${father ? ', बाबु: ' + esc(father.name) : ''})</span></span>
+            <span class="gen-badge">${esc(d.order) || ''}</span>
+          </li>`;
+        });
+        html += `</ul>`;
+      }
+      html += `</div>`;
+
+      document.getElementById('focusModalBody').innerHTML = html;
+      document.getElementById('focusModal').style.display = 'flex';
+    }
+
+    function closeFocusModal() { document.getElementById('focusModal').style.display = 'none'; }
+
+    // --- MULTI-MATCH SEARCH WITH ENTER CYCLE & NAVIGATION ---
+    function handleSearchInput() {
+      const query = document.getElementById('searchInput').value.trim().toLowerCase();
+      
+      document.querySelectorAll('.member-card').forEach(c => {
+        c.classList.remove('match-active', 'match-passive');
+      });
+
+      if (!query) {
+        searchMatches = [];
+        searchIndex = -1;
+        document.getElementById('searchCount').innerText = '';
+        renderTable();
+        return;
+      }
+
+      const filtered = members.filter(m => 
+        m.name.toLowerCase().includes(query) || 
+        (m.spouseName && m.spouseName.toLowerCase().includes(query)) ||
+        (m.motherName && m.motherName.toLowerCase().includes(query))
+      );
+      renderTable(filtered);
+
+      searchMatches = members.filter(m => 
+        m.name.toLowerCase().includes(query) || 
+        (m.spouseName && m.spouseName.toLowerCase().includes(query))
+      );
+
+      if (searchMatches.length > 0) {
+        searchMatches.forEach(m => ensureAncestorsExpanded(m.fatherId));
+        renderTree();
+
+        searchMatches.forEach(m => {
+          const card = document.getElementById(`card-${m.id}`);
+          if (card) card.classList.add('match-passive');
+        });
+
+        searchIndex = 0;
+        focusCurrentMatch();
+      } else {
+        searchIndex = -1;
+        document.getElementById('searchCount').innerText = 'भेटिएन';
+      }
+    }
+
+    function handleSearchKeyDown(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (searchMatches.length > 0) {
+          navigateSearchResult(1);
+        }
+      }
+    }
+
+    function navigateSearchResult(direction) {
+      if (searchMatches.length === 0) return;
+
+      searchIndex += direction;
+      if (searchIndex >= searchMatches.length) searchIndex = 0;
+      if (searchIndex < 0) searchIndex = searchMatches.length - 1;
+
+      focusCurrentMatch();
+    }
+
+    function focusCurrentMatch() {
+      if (searchIndex < 0 || searchIndex >= searchMatches.length) return;
+
+      document.querySelectorAll('.member-card').forEach(c => c.classList.remove('match-active'));
+
+      const current = searchMatches[searchIndex];
+      const card = document.getElementById(`card-${current.id}`);
+
+      if (card) {
+        card.classList.remove('match-passive');
+        card.classList.add('match-active');
+        centerOnCard(card);
+      }
+
+      document.getElementById('searchCount').innerText = `${searchIndex + 1} / ${searchMatches.length} भेटिए`;
+    }
+
+    function ensureAncestorsExpanded(fatherId) {
+      let currentId = fatherId;
+      while (currentId) {
+        if (collapsedNodes.has(currentId)) {
+          collapsedNodes.delete(currentId);
+        }
+        const parent = members.find(m => m.id === currentId);
+        currentId = parent ? parent.fatherId : null;
+      }
+    }
+
+    function centerOnCard(cardElement) {
+      const viewport = document.getElementById('viewport');
+      const canvas = document.getElementById('panCanvas');
+
+      const vpRect = viewport.getBoundingClientRect();
+      const cardRect = cardElement.getBoundingClientRect();
+
+      const currentCanvasRect = canvas.getBoundingClientRect();
+
+      const cardOffsetX = (cardRect.left - currentCanvasRect.left) / scale;
+      const cardOffsetY = (cardRect.top - currentCanvasRect.top) / scale;
+
+      const cardWidth = cardRect.width / scale;
+      const cardHeight = cardRect.height / scale;
+
+      panX = (vpRect.width / 2) - (cardOffsetX + cardWidth / 2) * scale;
+      panY = (vpRect.height / 2) - (cardOffsetY + cardHeight / 2) * scale;
+
+      updateTransform();
+    }
+
+    // --- MODAL & FORM OPERATIONS ---
+    function openAddModal() {
+      document.getElementById('modalTitle').innerText = 'नयाँ जुग्जाली सदस्य प्रविष्टि';
+      document.getElementById('memberForm').reset();
+      document.getElementById('memberId').value = '';
+      populateFatherDropdown();
+      document.getElementById('memberModal').style.display = 'flex';
+    }
+
+    function openAddModalForParent(parentId) {
+      openAddModal();
+      document.getElementById('fatherId').value = parentId;
+      updateGenerationFromFather();
+    }
+
+    function addOlderAncestor(currentRootId) {
+      const currentRoot = members.find(m => m.id === currentRootId);
+      if (!currentRoot) return;
+
+      const parentName = prompt(`"${currentRoot.name}" को माथिल्लो पूर्वज/बुवाको नाम लेख्नुहोस् (उदा: कवीराम जुग्जाली):`);
+      if (!parentName || !parentName.trim()) return;
+
+      const newParentId = generateId();
+      shiftGenerations(currentRootId, 1);
+
+      const newParent = {
+        id: newParentId,
+        fatherId: "",
+        name: parentName.trim(),
+        gender: "M",
+        generation: 1,
+        order: "मूल पूर्वज",
+        motherName: "",
+        spouseName: "",
+        birthYear: "",
+        status: "दिवङ्गत",
+        notes: "माथिल्लो पूर्वज (थपिएको)"
+      };
+
+      currentRoot.fatherId = newParentId;
+
+      members.push(newParent);
+      saveData();
+      renderAll();
+      alert(`"${parentName}" लाई माथिल्लो पुस्ता (पुस्ता १) को रूपमा जोडिएको छ।`);
+    }
+
+    function shiftGenerations(memberId, increment) {
+      const target = members.find(m => m.id === memberId);
+      if (target) {
+        target.generation = parseInt(target.generation) + increment;
+        const children = members.filter(m => m.fatherId === memberId);
+        children.forEach(child => shiftGenerations(child.id, increment));
+      }
+    }
+
+    function openEditModal(id) {
+      const m = members.find(item => item.id === id);
+      if (!m) return;
+
+      document.getElementById('modalTitle').innerText = 'सदस्य विवरण सम्पादन';
+      populateFatherDropdown();
+
+      document.getElementById('memberId').value = m.id;
+      document.getElementById('fatherId').value = m.fatherId || '';
+      document.getElementById('memberName').value = m.name;
+      document.getElementById('gender').value = m.gender;
+      document.getElementById('generation').value = m.generation;
+      document.getElementById('memberOrder').value = m.order || (m.gender === 'M' ? 'जेठो' : 'जेठी छोरी');
+      document.getElementById('motherName').value = m.motherName || '';
+      document.getElementById('spouseName').value = m.spouseName || '';
+      document.getElementById('birthYear').value = m.birthYear || '';
+      document.getElementById('status').value = m.status || 'जीवित';
+      document.getElementById('notes').value = m.notes || '';
+
+      document.getElementById('memberModal').style.display = 'flex';
+    }
+
+    function closeModal() { document.getElementById('memberModal').style.display = 'none'; }
+
+    function saveMember(e) {
+      e.preventDefault();
+
+      const id = document.getElementById('memberId').value;
+      const fatherId = document.getElementById('fatherId').value;
+      const name = document.getElementById('memberName').value.trim();
+      const gender = document.getElementById('gender').value;
+      const generation = parseInt(document.getElementById('generation').value) || 1;
+      const order = document.getElementById('memberOrder').value;
+      const motherName = document.getElementById('motherName').value.trim();
+      const spouseName = document.getElementById('spouseName').value.trim();
+      const birthYear = document.getElementById('birthYear').value.trim();
+      const status = document.getElementById('status').value;
+      const notes = document.getElementById('notes').value.trim();
+
+      if (id) {
+        const index = members.findIndex(m => m.id === id);
+        if (index !== -1) {
+          members[index] = { id, fatherId, name, gender, generation, order, motherName, spouseName, birthYear, status, notes };
+        }
+      } else {
+        const newId = generateId();
+        members.push({ id: newId, fatherId, name, gender, generation, order, motherName, spouseName, birthYear, status, notes });
+      }
+
+      saveData();
+      renderAll();
+      closeModal();
+    }
+
+    function deleteMember(id) {
+      const member = members.find(m => m.id === id);
+      if (!member) return;
+
+      const firstConfirm = confirm(`⚠️ ध्यान दिनुहोस्!\n\nके तपाईँ "${member.name}" को विवरण प्रणालीबाट मेटाउन निश्चित हुनुहुन्छ?`);
+      if (!firstConfirm) return;
+
+      const children = members.filter(m => m.fatherId === id);
+
+      if (children.length > 0) {
+        const childNames = children.map(c => c.name).join(', ');
+        const secondConfirm = confirm(`🚨 चेतावनी (सन्ततिहरू भेटिए)!\n\n"${member.name}" का ${children.length} जना सन्ततिहरू (${childNames}) रहेका छन्।\n\nयदि तपाईँले ओके गर्दा यी सम्पूर्ण सन्तति र शाखाहरू पनि मेटिनेछन्।\n\nके तपाईँ सम्पूर्ण शाखा नै मेटाउन चाहनुहुन्छ?`);
+        
+        if (secondConfirm) {
+          deleteRecursive(id);
+          saveData();
+          renderAll();
+          alert(`"${member.name}" र उहाँका सम्पूर्ण सन्ततिहरू हटाइयो।`);
+        }
+      } else {
+        members = members.filter(m => m.id !== id);
+        saveData();
+        renderAll();
+      }
+    }
+
+    function deleteRecursive(parentId) {
+      const children = members.filter(m => m.fatherId === parentId);
+      children.forEach(child => deleteRecursive(child.id));
+      members = members.filter(m => m.id !== parentId);
+    }
+
+    // --- INSTANT EXPORT TO WORD (.DOCX) - GENERATION-WISE SORTED TABLE & HISTORY ---
+    function exportToWord() {
+      if (members.length === 0) {
+        alert("डाउनलोड गर्नका लागि वंशावलीमा कुनै डेटा उपलब्ध छैन।");
+        return;
+      }
+
+      showToast("Word (.docx) फाइल तयार हुँदैछ...");
+
+      // Sort Members strictly by Generation (1, 2, 3...)
+      const sortedMembers = [...members].sort((a, b) => 
+        (parseInt(a.generation) || 1) - (parseInt(b.generation) || 1) || 
+        (a.fatherId || '').localeCompare(b.fatherId || '') || 
+        a.name.localeCompare(b.name, 'ne')
+      );
+
+      // Build Generation-wise Structured Table Rows
+      let currentGen = null;
+      let tableRowsHtml = '';
+
+      sortedMembers.forEach(m => {
+        const father = members.find(f => f.id === m.fatherId);
+        const mGen = parseInt(m.generation) || 1;
+
+        // Header banner for each new Generation
+        if (mGen !== currentGen) {
+          currentGen = mGen;
+          tableRowsHtml += `
+            <tr style="background-color:#1e3a8a; color:white;">
+              <td colspan="9" style="padding:8px; font-size:13px; font-weight:bold; border:1px solid #1e3a8a;">
+                🌳 पुस्ता ${currentGen} (Generation ${currentGen})
+              </td>
+            </tr>
+          `;
+        }
+
+        tableRowsHtml += `
+          <tr>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px; text-align:center;">${esc(m.id)}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px; font-weight:bold;">${esc(m.name)}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px; text-align:center;">पुस्ता ${esc(m.generation)}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${m.gender === 'M' ? 'छोरा' : 'छोरी'}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${father ? esc(father.name) : '-'}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${esc(m.motherName) || '-'}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${esc(m.spouseName) || '-'}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${esc(m.order) || '-'}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${esc(m.status) || 'जीवित'}</td>
+          </tr>
+        `;
+      });
+
+      // Full Word Document HTML Template
+      const wordDocumentHtml = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head>
+          <meta charset='utf-8'>
+          <title>जुग्जाली वंशावली अभिलेख</title>
+          <style>
+            body { font-family: 'Mukta', 'Kalimati', 'Segoe UI', sans-serif; line-height: 1.5; color: #0f172a; }
+            h1 { color: #1e3a8a; font-size: 20pt; text-align: center; margin-bottom: 4pt; }
+            p.subtitle { color: #475569; font-size: 11pt; text-align: center; margin-bottom: 18pt; }
+            h2 { color: #0d9488; font-size: 14pt; border-bottom: 2px solid #cbd5e1; padding-bottom: 4pt; margin-top: 18pt; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10pt; margin-bottom: 20pt; }
+            th { background-color: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; padding: 7px; font-size: 11px; text-align: left; }
+          </style>
+        </head>
+        <body>
+          <h1>🌳 जुग्जाली वंशावली अभिलेख तथा पारिवारिक विवरण</h1>
+          <p class="subtitle">अभिलेख मिति: ${new Date().toLocaleDateString('ne-NP')} | कुल दर्ता सदस्य: ${members.length} जना</p>
+
+          <h2>📋 १. पुस्ता अनुसार सदस्यहरूको पूर्ण विवरण तालिका (Generation-wise Table)</h2>
+          <table>
+            <thead>
+              <tr style="background-color:#f1f5f9;">
+                <th>ID</th>
+                <th>पुरा नाम</th>
+                <th>पुस्ता</th>
+                <th>लिङ्ग</th>
+                <th>बुवाको नाम</th>
+                <th>आमाको नाम</th>
+                <th>श्रीमती/श्रीमान्</th>
+                <th>क्रम</th>
+                <th>अवस्था</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableRowsHtml}
+            </tbody>
+          </table>
+
+          <h2>📖 २. जुग्जाली इतिहास तथा कुलदेवता विवरण</h2>
+          <div style="font-size:12px; line-height:1.7;">${historyData}</div>
+        </body>
+        </html>
+      `;
+
+      // Download Word Blob
+      const blob = new Blob(['\ufeff', wordDocumentHtml], { type: 'application/msword' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `Jugjali_Vanshawali_Document_${new Date().toISOString().slice(0,10)}.doc`;
+      link.click();
+
+      showToast("✓ Word (.doc/.docx) फाइल डाउनलोड भयो!");
+    }
+
+    // --- EXPORT TO NATIVE EXCEL (.XLSX) - GENERATION-WISE SORTED ---
+    function exportToXLSX() {
+      if (members.length === 0) {
+        alert("निकाल्नका लागि कुनै डेटा उपलब्ध छैन।");
+        return;
+      }
+
+      showToast("Excel (.xlsx) फाइल तयार हुँदैछ...");
+
+      // Sort Members strictly by Generation (1, 2, 3...)
+      const sortedMembers = [...members].sort((a, b) => 
+        (parseInt(a.generation) || 1) - (parseInt(b.generation) || 1) || 
+        (a.fatherId || '').localeCompare(b.fatherId || '') || 
+        a.name.localeCompare(b.name, 'ne')
+      );
+
+      const excelRows = sortedMembers.map(m => {
+        const father = members.find(f => f.id === m.fatherId);
+        return {
+          "ID": m.id,
+          "Full_Name": m.name || '',
+          "Gender": m.gender === 'M' ? 'Male' : 'Female',
+          "Generation": m.generation,
+          "Father_ID": m.fatherId || '',
+          "Father_Name": father ? father.name : '',
+          "Mother_Name": m.motherName || '',
+          "Spouse_Name": m.spouseName || '',
+          "Order": m.order || '',
+          "Status": m.status || 'जीवित',
+          "Birth_Year": m.birthYear || '',
+          "Notes": m.notes || ''
+        };
+      });
+
+      const worksheet = XLSX.utils.json_to_sheet(excelRows);
+
+      const colWidths = [
+        { wch: 14 }, { wch: 25 }, { wch: 10 }, { wch: 12 },
+        { wch: 14 }, { wch: 25 }, { wch: 22 }, { wch: 22 },
+        { wch: 15 }, { wch: 12 }, { wch: 15 }, { wch: 30 }
+      ];
+      worksheet['!cols'] = colWidths;
+
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "जुग्जाली वंशावली");
+
+      const filename = `Jugjali_Vanshawali_Data_${new Date().toISOString().slice(0,10)}.xlsx`;
+      XLSX.writeFile(workbook, filename);
+    }
+
+    // --- BACKUP (JSON) ---
+    function exportToJSON() {
+      if (members.length === 0 && !historyData) {
+        alert("निकाल्नका लागि कुनै डेटा उपलब्ध छैन।");
+        return;
+      }
+      
+      const backupPackage = {
+        version: "2.0",
+        members: members,
+        history: historyData
+      };
+
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupPackage, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `jugjali_vanshawali_backup_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function triggerImport() { document.getElementById('fileInput').click(); }
+
+    // --- ENHANCED IMPORT ---
+    function handleFileImport(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const fileName = file.name.toLowerCase();
+
+      if (fileName.endsWith('.json')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          let imported;
+          try {
+            imported = JSON.parse(e.target.result);
+          } catch (err) {
+            alert('⚠️ फाइल पढ्न सकिएन — यो मान्य JSON फाइल होइन।');
+            event.target.value = '';
+            return;
+          }
+
+          let newMembers = [];
+          let newHistory = "";
+
+          if (Array.isArray(imported)) {
+            newMembers = imported;
+            newHistory = historyData;
+          } else if (imported && typeof imported === 'object' && Array.isArray(imported.members)) {
+            newMembers = imported.members;
+            newHistory = imported.history || "";
+          } else {
+            alert('⚠️ फाइलको ढाँचा वंशावली डेटासँग मिलेन।');
+            event.target.value = '';
+            return;
+          }
+
+          confirmAndApplyImport(newMembers, newHistory, event);
+        };
+        reader.readAsText(file);
+      } 
+      else if (fileName.endsWith('.xlsx') || fileName.endsWith('.csv')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            const rawJson = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+            if (!rawJson || rawJson.length === 0) {
+              alert('⚠️ Excel/CSV फाइलमा कुनै डेटा भेटिएन।');
+              event.target.value = '';
+              return;
+            }
+
+            const parsedMembers = rawJson.map(row => {
+              const genderRaw = String(row.Gender || row.gender || row['लिङ्ग'] || 'M').trim().toUpperCase();
+              return {
+                id: String(row.ID || row.id || generateId()).trim(),
+                name: String(row.Full_Name || row.name || row['पुरा नाम'] || 'नाम नखुलेको').trim(),
+                gender: (genderRaw === 'FEMALE' || genderRaw === 'F' || genderRaw === 'छोरी') ? 'F' : 'M',
+                generation: parseInt(row.Generation || row.generation || row['पुस्ता']) || 1,
+                fatherId: String(row.Father_ID || row.fatherId || row['बुवाको ID'] || '').trim(),
+                motherName: String(row.Mother_Name || row.motherName || row['आमाको नाम'] || '').trim(),
+                spouseName: String(row.Spouse_Name || row.spouseName || row['श्रीमती/श्रीमान्'] || '').trim(),
+                order: String(row.Order || row.order || row['क्रम'] || '').trim(),
+                status: String(row.Status || row.status || row['अवस्था'] || 'जीवित').trim(),
+                birthYear: String(row.Birth_Year || row.birthYear || row['जन्म वर्ष'] || '').trim(),
+                notes: String(row.Notes || row.notes || row['कैफियत'] || '').trim()
+              };
+            });
+
+            confirmAndApplyImport(parsedMembers, null, event);
+          } catch (err) {
+            console.error(err);
+            alert('⚠️ Excel/CSV फाइल पढ्न सकिएन।');
+            event.target.value = '';
+          }
+        };
+        reader.readAsArrayBuffer(file);
+      } else {
+        alert('⚠️ यो फाइल प्रकार समर्थित छैन। कृपया .xlsx, .csv वा .json फाइल छान्नुहोस्।');
+        event.target.value = '';
+      }
+    }
+
+    function confirmAndApplyImport(newMembers, newHistory, event) {
+      const currentCount = members.length;
+      const importCount = newMembers.length;
+      const confirmMsg = currentCount > 0
+        ? `⚠️ ध्यान दिनुहोस्!\n\nयो फाइलमा ${importCount} जना सदस्य भेटियो।\n\nयसले हालका ${currentCount} जना सदस्यको सट्टामा पूर्ण रूपमा प्रतिस्थापन गर्नेछ — अहिलेको डेटा हराउनेछ।\n\n(सुरक्षित राख्न पहिले "Backup" बटनबाट हालको डेटा निकाल्न सिफारिस गरिन्छ।)\n\nके तपाईं साँच्चै अगाडि बढ्न चाहनुहुन्छ?`
+        : `यो फाइलमा ${importCount} जना सदस्य भेटियो। यो डेटा लोड गर्ने हो?`;
+
+      if (!confirm(confirmMsg)) {
+        event.target.value = '';
+        return;
+      }
+
+      members = newMembers;
+      if (newHistory) {
+        historyData = newHistory;
+      }
+
+      saveData();
+      renderAll();
+      alert(`✓ सफलतापूर्वक ${importCount} वटा सदस्यको डेटा लोड भयो!`);
+      event.target.value = '';
+    }
+  </script>
+</body>
+</html>
