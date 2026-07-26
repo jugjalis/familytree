@@ -42,6 +42,98 @@
       overflow-x: hidden;
     }
 
+    /* System Locked Content Hidden by Default */
+    #protectedContent {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Login Screen Overlay */
+    #loginOverlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      padding: 15px;
+    }
+
+    .login-card {
+      background: white;
+      padding: 30px 25px;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .login-card h2 {
+      color: var(--primary);
+      margin-bottom: 8px;
+      font-size: 1.4rem;
+    }
+
+    .login-card p {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+
+    .login-form-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .login-form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: var(--text-main);
+    }
+
+    .login-form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .login-form-group input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 10px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+
+    .login-btn:hover { background: #1d4ed8; }
+
+    #loginError {
+      color: #dc2626;
+      font-size: 0.8rem;
+      margin-top: 10px;
+      display: none;
+      font-weight: bold;
+    }
+
     /* Header Styling */
     header {
       background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
@@ -79,6 +171,7 @@
       border-radius: 20px;
       font-size: 0.78rem;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .stats-bar span {
@@ -86,7 +179,15 @@
       color: #fde047;
     }
 
-    /* Toast Notification */
+    .role-badge {
+      background: #f59e0b;
+      color: #0f172a;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+
     #toast {
       position: fixed;
       top: 15px;
@@ -108,7 +209,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Navigation Tabs */
     nav {
       background-color: white;
       border-bottom: 1px solid var(--border-color);
@@ -140,7 +240,6 @@
     .tab-btn:hover { color: var(--primary-light); }
     .tab-btn.active { color: var(--primary); border-bottom-color: var(--primary); }
 
-    /* Main Content Layout */
     main {
       flex: 1;
       padding: 12px;
@@ -152,7 +251,6 @@
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* Controls Bar */
     .controls-card {
       background: white;
       padding: 12px;
@@ -244,7 +342,6 @@
     .btn-word { background-color: #2b579a; color: white; }
     .btn-word:hover { background-color: #1e395b; }
 
-    /* Zoom Controls Bar */
     .zoom-toolbar {
       display: flex;
       align-items: center;
@@ -266,7 +363,6 @@
 
     .zoom-btn:hover { background: #cbd5e1; }
 
-    /* Pan & Zoom Canvas Window */
     .tree-viewport {
       background: #f1f5f9;
       border: 2px solid var(--border-color);
@@ -292,7 +388,6 @@
       will-change: transform;
     }
 
-    /* Tree Node Hierarchy */
     .tf-tree {
       display: inline-flex;
       flex-direction: column;
@@ -343,7 +438,6 @@
       width: 0; height: 20px;
     }
 
-    /* Member Card */
     .member-card {
       background: white;
       border: 2px solid var(--border-color);
@@ -458,7 +552,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
 
-    /* Table View Styling */
     .table-container {
       background: white;
       border-radius: 12px;
@@ -471,7 +564,6 @@
     th, td { padding: 10px 12px; border-bottom: 1px solid var(--border-color); font-size: 0.85rem; }
     th { background-color: #f1f5f9; color: var(--text-main); font-weight: 700; }
 
-    /* Dashboard & Cards Styling */
     .dashboard-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -512,7 +604,6 @@
     .progress-bg { background: #e2e8f0; height: 10px; border-radius: 5px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--primary-light); border-radius: 5px; }
 
-    /* Relationship Calculator Card */
     .rel-card {
       background: white;
       padding: 22px;
@@ -590,7 +681,6 @@
       line-height: 1.6;
     }
 
-    /* History / Article Editor Styling */
     .history-card {
       background: white;
       padding: 20px;
@@ -606,7 +696,6 @@
     .history-card h3 { font-size: 1.05rem; color: #334155; margin-top: 15px; margin-bottom: 6px; }
     .history-card p { margin-bottom: 12px; text-align: justify; color: #334155; }
 
-    /* Modal Styling */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -689,8 +778,9 @@
     .lineage-item.current-person { background: #fef3c7; border: 2px solid #f59e0b; font-weight: bold; }
 
     @media print {
-      header, nav, .controls-card, .zoom-toolbar, .btn-group, .member-actions, .modal-overlay { display: none !important; }
+      #loginOverlay, header, nav, .controls-card, .zoom-toolbar, .btn-group, .member-actions, .modal-overlay { display: none !important; }
       body { background: white; }
+      #protectedContent { display: flex !important; }
       .tree-viewport { height: auto; border: none; overflow: visible; }
       .tree-pan-canvas { transform: none !important; position: static; padding: 0; }
     }
@@ -698,341 +788,555 @@
 </head>
 <body>
 
-  <div id="toast">✓ सेभ भयो (Auto-saved)</div>
-
-  <!-- Header -->
-  <header>
-    <div class="logo-area">
-      <h1>🌳 जुग्जाली वंशावली अभिलेख तथा पारिवारिक वृक्ष</h1>
-      <p>पारिवारिक संरचना तथा जुग्जाली वंशज सङ्ग्रह प्रणाली (Offline System)</p>
-    </div>
-    <div class="stats-bar">
-      <div>कुल सदस्य: <span id="statTotal">0</span></div>
-      <div>कुल पुस्ता: <span id="statGen">0</span></div>
-      <div>छोरा: <span id="statSons">0</span></div>
-      <div>छोरीहरू: <span id="statDaughters">0</span></div>
-    </div>
-  </header>
-
-  <!-- Navigation Tabs -->
-  <nav>
-    <button class="tab-btn active" onclick="switchTab('tree')">🌳 वंशावली नक्सा</button>
-    <button class="tab-btn" onclick="switchTab('table')">📋 तालिका विवरण</button>
-    <button class="tab-btn" onclick="switchTab('relation')">🔍 नाता खोज्ने</button>
-    <button class="tab-btn" onclick="switchTab('analytics')">📊 तथ्याङ्क तथा रिपोर्ट</button>
-      </nav>
-
-  <!-- Main Content -->
-  <main>
-    
-    <!-- Controls Bar -->
-    <div class="controls-card" id="mainControls">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="नाम लेखेर Enter थिच्दै जानुहोस्..." onkeydown="handleSearchKeyDown(event)" oninput="handleSearchInput()">
-        <button class="search-nav-btn" onclick="navigateSearchResult(-1)" title="अघिल्लो व्यक्ति">◀</button>
-        <button class="search-nav-btn" onclick="navigateSearchResult(1)" title="पछिल्लो व्यक्ति">▶</button>
-        <span class="search-count" id="searchCount"></span>
-      </div>
-
-      <!-- Zoom Controls -->
-      <div class="zoom-toolbar">
-        <span style="font-size:0.75rem; font-weight:bold; color:#475569;">Zoom:</span>
-        <button class="zoom-btn" onclick="zoomInButton()" title="Zoom In">🔍 +</button>
-        <button class="zoom-btn" onclick="zoomOutButton()" title="Zoom Out">🔍 -</button>
-        <button class="zoom-btn" onclick="resetZoom()" title="Reset View">↺ Reset</button>
-      </div>
-
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="openAddModal()">➕ नयाँ सदस्य</button>
-        <button class="btn btn-word" onclick="exportToWord()">📄 Word (.docx)</button>
-        <button class="btn btn-success" style="background:#16a34a;" onclick="exportToXLSX()">📊 Excel (.xlsx)</button>
-        <button class="btn btn-secondary" onclick="triggerImport()">📥 Import</button>
-        <button class="btn btn-secondary" onclick="exportToJSON()">💾 Backup</button>
-        <input type="file" id="fileInput" accept=".xlsx, .csv, .json" style="display: none;" onchange="handleFileImport(event)">
-      </div>
-    </div>
-
-    <!-- TAB 1: Interactive Tree View -->
-    <div id="treeTab" class="tab-content active">
-      <div class="tree-viewport" id="viewport">
-        <div class="tree-pan-canvas" id="panCanvas">
-          <div class="tree-wrapper" id="treeWrapper"></div>
+  <!-- LOGIN SCREEN (SECURITY OVERLAY) -->
+  <div id="loginOverlay">
+    <div class="login-card">
+      <h2>🔒 जुग्जाली वंशावली</h2>
+      <p>अभिलेख प्रणालीमा स्वागत छ। कृपया लगइन गर्नुहोस्।</p>
+      
+      <form onsubmit="handleLogin(event)">
+        <div class="login-form-group">
+          <label>Username (प्रयोगकर्ता नाम):</label>
+          <input type="text" id="loginUser" required placeholder="guest वा admin">
         </div>
-      </div>
-    </div>
-
-    <!-- TAB 2: Table View -->
-    <div id="tableTab" class="tab-content">
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>पुरा नाम</th>
-              <th>पुस्ता</th>
-              <th>लिङ्ग</th>
-              <th>बुवाको नाम</th>
-              <th>आमाको नाम</th>
-              <th>श्रीमती/श्रीमान्</th>
-              <th>जन्म/अवस्था</th>
-              <th>क्रम</th>
-              <th>कार्य</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- TAB 3: Relationship Calculator -->
-    <div id="relationTab" class="tab-content">
-      <div class="rel-card">
-        <h2 style="color:var(--primary); font-size:1.15rem; margin-bottom:10px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">🔍 जुग्जाली नाता तथा साझा पूर्वज खोज प्रणाली</h2>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">कुनै दुई व्यक्ति छान्नुहोस् र नेपाली पारिवारिक परम्परा अनुसार उहाँहरू बीचको नाता तथा साझा पुर्खा (Common Ancestor) पत्ता लगाउनुहोस्।</p>
+        <div class="login-form-group">
+          <label>Password (पासवर्ड):</label>
+          <input type="password" id="loginPass" required placeholder="••••••••">
+        </div>
         
-        <div class="rel-select-grid">
-          <div class="form-group">
-            <label>पहिलो व्यक्ति खोज्नुहोस् (व्यक्ति A):</label>
-            <div class="autocomplete-wrap">
-              <input type="text" id="relPersonASearch" placeholder="नाम टाइप गर्नुहोस्..." autocomplete="off"
-                oninput="handleRelSearchInput('A')" onfocus="handleRelSearchFocus('A')" onkeydown="handleRelSearchKeyDown(event,'A')">
-              <input type="hidden" id="relPersonA">
-              <div class="autocomplete-list" id="relPersonAList"></div>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>दोस्रो व्यक्ति खोज्नुहोस् (व्यक्ति B):</label>
-            <div class="autocomplete-wrap">
-              <input type="text" id="relPersonBSearch" placeholder="नाम टाइप गर्नुहोस्..." autocomplete="off"
-                oninput="handleRelSearchInput('B')" onfocus="handleRelSearchFocus('B')" onkeydown="handleRelSearchKeyDown(event,'B')">
-              <input type="hidden" id="relPersonB">
-              <div class="autocomplete-list" id="relPersonBList"></div>
-            </div>
-          </div>
-        </div>
-
-        <div id="relResult" class="rel-result-box" style="display:none;"></div>
-      </div>
-    </div>
-
-    <!-- TAB 4: Analytics & Dashboard -->
-    <div id="analyticsTab" class="tab-content">
-      <div class="dashboard-grid">
-        <div class="dash-card">
-          <h4>कुल वंशज दर्ता</h4>
-          <div class="val" id="dashTotal">0</div>
-        </div>
-        <div class="dash-card">
-          <h4>जीवित सदस्यहरू</h4>
-          <div class="val" style="color:#16a34a;" id="dashLiving">0</div>
-        </div>
-        <div class="dash-card">
-          <h4>दिवङ्गत पूर्वजहरू</h4>
-          <div class="val" style="color:#475569;" id="dashDeceased">0</div>
-        </div>
-        <div class="dash-card">
-          <h4>कुल पुस्ता (Generations)</h4>
-          <div class="val" style="color:#d97706;" id="dashMaxGen">0</div>
-        </div>
-      </div>
-
-      <div class="chart-box">
-        <h3>📊 पुस्ता अनुसार सदस्य सङ्ख्या विवरण (Generation Breakdown)</h3>
-        <div id="genProgressBars"></div>
-      </div>
-
-      <div class="chart-box">
-        <h3>👦👧 लिङ्ग तथा जन्म क्रम अनुसार विवरण</h3>
-        <div id="orderProgressBars"></div>
-      </div>
-    </div>
-
-    <!-- TAB 5: History & Kul Devata -->
-    <div id="historyTab" class="tab-content">
-      <div class="history-card">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:2px solid var(--border-color); padding-bottom:8px; flex-wrap:wrap; gap:10px;">
-          <h2 style="border:none; padding:0; margin:0;">📖 जुग्जाली वंशको उत्पत्ति, इतिहास तथा कुलदेवता विवरण</h2>
-          <button class="btn btn-primary" onclick="openHistoryEditModal()">✏️ सम्पादन गर्नुहोस्</button>
-        </div>
-        <div id="historyContentDisplay"></div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- Add/Edit Member Modal -->
-  <div class="modal-overlay" id="memberModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 id="modalTitle">नयाँ जुग्जाली सदस्य प्रविष्टि</h3>
-        <button class="close-btn" onclick="closeModal()">✖</button>
-      </div>
-      <form id="memberForm" onsubmit="saveMember(event)">
-        <div class="modal-body">
-          <input type="hidden" id="memberId">
-          <div class="form-grid">
-
-            <div class="form-group full-width">
-              <label>बुवा (Father) / शाखा रोज्नुहोस्:</label>
-              <select id="fatherId" onchange="updateGenerationFromFather()">
-                <option value="">-- मूल पूर्वज (Root Ancestor - कुनै बाबु नभएको) --</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>पुरा नाम *:</label>
-              <input type="text" id="memberName" required placeholder="उदा: रामबहादुर जुग्जाली">
-            </div>
-
-            <div class="form-group">
-              <label>लिङ्ग (Gender) *:</label>
-              <select id="gender" required>
-                <option value="M">छोरा (Male - शाखा बढ्ने)</option>
-                <option value="F">छोरी (Female - शाखा नबढ्ने)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>पुस्ता (Generation):</label>
-              <input type="number" id="generation" min="1" value="1" required>
-            </div>
-
-            <div class="form-group">
-              <label>क्रम (Order):</label>
-              <select id="memberOrder">
-                <optgroup label="छोराहरूका लागि क्रम">
-                  <option value="एकल छोरो">एकल छोरो</option>
-                  <option value="जेठो">जेठो</option>
-                  <option value="माइलो">माइलो</option>
-                  <option value="साइलो">साइलो</option>
-                  <option value="काइलो">काइलो</option>
-                  <option value="ठाइलो">ठाइलो</option>
-                  <option value="राहिलो">राहिलो</option>
-                  <option value="कान्छाे">कान्छो</option>
-                </optgroup>
-                <optgroup label="छोरीहरूका लागि क्रम">
-                  <option value="एकल छोरी">एकल छोरी</option>
-                  <option value="जेठी छोरी">जेठी छोरी</option>
-                  <option value="माइली छोरी">माइली छोरी</option>
-                  <option value="साइली छोरी">साइली छोरी</option>
-                  <option value="काइली छोरी">काइली छोरी</option>
-                  <option value="ठाइली छोरी">ठाइली छोरी</option>
-                  <option value="राहिली छोरी">राहिली छोरी</option>
-                  <option value="कान्छी छोरी">कान्छी छोरी</option>
-                </optgroup>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label>आमाको नाम:</label>
-              <input type="text" id="motherName" placeholder="उदा: दिलमाया जुग्जाली">
-            </div>
-
-            <div class="form-group">
-              <label>श्रीमती / श्रीमान्‌को नाम:</label>
-              <input type="text" id="spouseName" placeholder="उदा: सीता जुग्जाली">
-            </div>
-
-            <div class="form-group">
-              <label>जन्म वर्ष / मिति (BS):</label>
-              <input type="text" id="birthYear" placeholder="उदा: २०३५ BS">
-            </div>
-
-            <div class="form-group">
-              <label>हालको अवस्था:</label>
-              <select id="status">
-                <option value="जीवित">जीवित</option>
-                <option value="दिवङ्गत">दिवङ्गत</option>
-              </select>
-            </div>
-
-            <div class="form-group full-width">
-              <label>कैफियत / छोटो विवरण:</label>
-              <textarea id="notes" rows="2" placeholder="ठेगाना, पेसा वा विशेष योगदान..."></textarea>
-            </div>
-
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" onclick="closeModal()">रद्द गर्नुहोस्</button>
-          <button type="submit" class="btn btn-primary">सुरक्षित गर्नुहोस् (Save)</button>
-        </div>
+        <div id="loginError">⚠️ गलत प्रयोगकर्ता नाम वा पासवर्ड!</div>
+        <button type="submit" class="login-btn">🔓 प्रवेश गर्नुहोस् (Login)</button>
       </form>
     </div>
   </div>
 
-  <!-- History Edit Modal -->
-  <div class="modal-overlay" id="historyModal">
-    <div class="modal-card" style="max-width: 800px;">
-      <div class="modal-header">
-        <h3>जुग्जाली इतिहास सम्पादन</h3>
-        <button class="close-btn" onclick="closeHistoryModal()">✖</button>
+  <!-- PROTECTED MAIN CONTENT -->
+  <div id="protectedContent">
+
+    <div id="toast">✓ सेभ भयो (Auto-saved)</div>
+
+    <!-- Header -->
+    <header>
+      <div class="logo-area">
+        <h1>🌳 जुग्जाली वंशावली अभिलेख तथा पारिवारिक वृक्ष</h1>
+        <p>पारिवारिक संरचना तथा जुग्जाली वंशज सङ्ग्रह प्रणाली</p>
       </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>इतिहास तथा कुलदेवता विवरण (HTML/Text):</label>
-          <textarea id="historyInputText" rows="10" style="width:100%; font-size:0.9rem; padding:8px; line-height:1.5;"></textarea>
+      <div class="stats-bar">
+        <div>कुल सदस्य: <span id="statTotal">0</span></div>
+        <div>कुल पुस्ता: <span id="statGen">0</span></div>
+        <div>छोरा: <span id="statSons">0</span></div>
+        <div>छोरीहरू: <span id="statDaughters">0</span></div>
+        <span class="role-badge" id="roleDisplay">Viewer</span>
+        <button onclick="handleLogout()" style="background:#dc2626; color:white; border:none; padding:3px 8px; border-radius:12px; font-size:0.75rem; cursor:pointer; margin-left:5px;">🔒 Logout</button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav>
+      <button class="tab-btn active" onclick="switchTab('tree')">🌳 वंशावली नक्सा</button>
+      <button class="tab-btn" onclick="switchTab('table')">📋 तालिका विवरण</button>
+      <button class="tab-btn" onclick="switchTab('relation')">🔍 नाता खोज्ने</button>
+      <button class="tab-btn" onclick="switchTab('analytics')">📊 तथ्याङ्क तथा रिपोर्ट</button>
+      <button class="tab-btn" onclick="switchTab('history')">📖 जुग्जाली इतिहास र कुलदेवता</button>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+      
+      <!-- Controls Bar -->
+      <div class="controls-card" id="mainControls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="नाम लेखेर Enter थिच्दै जानुहोस्..." onkeydown="handleSearchKeyDown(event)" oninput="handleSearchInput()">
+          <button class="search-nav-btn" onclick="navigateSearchResult(-1)" title="अघिल्लो व्यक्ति">◀</button>
+          <button class="search-nav-btn" onclick="navigateSearchResult(1)" title="पछिल्लो व्यक्ति">▶</button>
+          <span class="search-count" id="searchCount"></span>
+        </div>
+
+        <!-- Zoom Controls -->
+        <div class="zoom-toolbar">
+          <span style="font-size:0.75rem; font-weight:bold; color:#475569;">Zoom:</span>
+          <button class="zoom-btn" onclick="zoomInButton()" title="Zoom In">🔍 +</button>
+          <button class="zoom-btn" onclick="zoomOutButton()" title="Zoom Out">🔍 -</button>
+          <button class="zoom-btn" onclick="resetZoom()" title="Reset View">↺ Reset</button>
+        </div>
+
+        <div class="btn-group">
+          <button class="btn btn-primary admin-only" onclick="openAddModal()">➕ नयाँ सदस्य</button>
+          <button class="btn btn-word" onclick="exportToWord()">📄 Word (.docx)</button>
+          <button class="btn btn-success" style="background:#16a34a;" onclick="exportToXLSX()">📊 Excel (.xlsx)</button>
+          <button class="btn btn-secondary admin-only" onclick="triggerImport()">📥 Import</button>
+          <button class="btn btn-secondary" onclick="exportToJSON()">💾 Backup</button>
+          <button class="btn btn-secondary" onclick="window.print()">🖨️ प्रिन्ट</button>
+          <input type="file" id="fileInput" accept=".xlsx, .csv, .json" style="display: none;" onchange="handleFileImport(event)">
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeHistoryModal()">रद्द गर्नुहोस्</button>
-        <button type="button" class="btn btn-primary" onclick="saveHistory()">सुरक्षित गर्नुहोस्</button>
-      </div>
-    </div>
-  </div>
 
-  <!-- Person Focus & Lineage Modal -->
-  <div class="modal-overlay" id="focusModal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 id="focusModalTitle">व्यक्तिगत वंश विवरण</h3>
-        <button class="close-btn" onclick="closeFocusModal()">✖</button>
+      <!-- TAB 1: Interactive Tree View -->
+      <div id="treeTab" class="tab-content active">
+        <div class="tree-viewport" id="viewport">
+          <div class="tree-pan-canvas" id="panCanvas">
+            <div class="tree-wrapper" id="treeWrapper"></div>
+          </div>
+        </div>
       </div>
-      <div class="modal-body" id="focusModalBody"></div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick="closeFocusModal()">बन्द गर्नुहोस्</button>
+
+      <!-- TAB 2: Table View -->
+      <div id="tableTab" class="tab-content">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>पुरा नाम</th>
+                <th>पुस्ता</th>
+                <th>लिङ्ग</th>
+                <th>बुवाको नाम</th>
+                <th>आमाको नाम</th>
+                <th>श्रीमती/श्रीमान्</th>
+                <th>जन्म/अवस्था</th>
+                <th>क्रम</th>
+                <th class="admin-only">कार्य</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB 3: Relationship Calculator -->
+      <div id="relationTab" class="tab-content">
+        <div class="rel-card">
+          <h2 style="color:var(--primary); font-size:1.15rem; margin-bottom:10px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">🔍 जुग्जाली नाता तथा साझा पूर्वज खोज प्रणाली</h2>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">कुनै दुई व्यक्ति छान्नुहोस् र नेपाली पारिवारिक परम्परा अनुसार उहाँहरू बीचको नाता तथा साझा पुर्खा (Common Ancestor) पत्ता लगाउनुहोस्।</p>
+          
+          <div class="rel-select-grid">
+            <div class="form-group">
+              <label>पहिलो व्यक्ति खोज्नुहोस् (व्यक्ति A):</label>
+              <div class="autocomplete-wrap">
+                <input type="text" id="relPersonASearch" placeholder="नाम टाइप गर्नुहोस्..." autocomplete="off"
+                  oninput="handleRelSearchInput('A')" onfocus="handleRelSearchFocus('A')" onkeydown="handleRelSearchKeyDown(event,'A')">
+                <input type="hidden" id="relPersonA">
+                <div class="autocomplete-list" id="relPersonAList"></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>दोस्रो व्यक्ति खोज्नुहोस् (व्यक्ति B):</label>
+              <div class="autocomplete-wrap">
+                <input type="text" id="relPersonBSearch" placeholder="नाम टाइप गर्नुहोस्..." autocomplete="off"
+                  oninput="handleRelSearchInput('B')" onfocus="handleRelSearchFocus('B')" onkeydown="handleRelSearchKeyDown(event,'B')">
+                <input type="hidden" id="relPersonB">
+                <div class="autocomplete-list" id="relPersonBList"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="relResult" class="rel-result-box" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- TAB 4: Analytics & Dashboard -->
+      <div id="analyticsTab" class="tab-content">
+        <div class="dashboard-grid">
+          <div class="dash-card">
+            <h4>कुल वंशज दर्ता</h4>
+            <div class="val" id="dashTotal">0</div>
+          </div>
+          <div class="dash-card">
+            <h4>जीवित सदस्यहरू</h4>
+            <div class="val" style="color:#16a34a;" id="dashLiving">0</div>
+          </div>
+          <div class="dash-card">
+            <h4>दिवङ्गत पूर्वजहरू</h4>
+            <div class="val" style="color:#475569;" id="dashDeceased">0</div>
+          </div>
+          <div class="dash-card">
+            <h4>कुल पुस्ता (Generations)</h4>
+            <div class="val" style="color:#d97706;" id="dashMaxGen">0</div>
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <h3>📊 पुस्ता अनुसार सदस्य सङ्ख्या विवरण (Generation Breakdown)</h3>
+          <div id="genProgressBars"></div>
+        </div>
+
+        <div class="chart-box">
+          <h3>👦👧 लिङ्ग तथा जन्म क्रम अनुसार विवरण</h3>
+          <div id="orderProgressBars"></div>
+        </div>
+      </div>
+
+      <!-- TAB 5: History & Kul Devata -->
+      <div id="historyTab" class="tab-content">
+        <div class="history-card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:2px solid var(--border-color); padding-bottom:8px; flex-wrap:wrap; gap:10px;">
+            <h2 style="border:none; padding:0; margin:0;">📖 जुग्जाली वंशको उत्पत्ति, इतिहास तथा कुलदेवता विवरण</h2>
+            <button class="btn btn-primary admin-only" onclick="openHistoryEditModal()">✏️ सम्पादन गर्नुहोस्</button>
+          </div>
+          <div id="historyContentDisplay"></div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Add/Edit Member Modal -->
+    <div class="modal-overlay" id="memberModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="modalTitle">नयाँ जुग्जाली सदस्य प्रविष्टि</h3>
+          <button class="close-btn" onclick="closeModal()">✖</button>
+        </div>
+        <form id="memberForm" onsubmit="saveMember(event)">
+          <div class="modal-body">
+            <input type="hidden" id="memberId">
+            <div class="form-grid">
+
+              <div class="form-group full-width">
+                <label>बुवा (Father) / शाखा रोज्नुहोस्:</label>
+                <select id="fatherId" onchange="updateGenerationFromFather()">
+                  <option value="">-- मूल पूर्वज (Root Ancestor - कुनै बाबु नभएको) --</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>पुरा नाम *:</label>
+                <input type="text" id="memberName" required placeholder="उदा: रामबहादुर जुग्जाली">
+              </div>
+
+              <div class="form-group">
+                <label>लिङ्ग (Gender) *:</label>
+                <select id="gender" required>
+                  <option value="M">छोरा (Male - शाखा बढ्ने)</option>
+                  <option value="F">छोरी (Female - शाखा नबढ्ने)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>पुस्ता (Generation):</label>
+                <input type="number" id="generation" min="1" value="1" required>
+              </div>
+
+              <div class="form-group">
+                <label>क्रम (Order):</label>
+                <select id="memberOrder">
+                  <optgroup label="छोराहरूका लागि क्रम">
+                    <option value="एकल छोरो">एकल छोरो</option>
+                    <option value="जेठो">जेठो</option>
+                    <option value="माइलो">माइलो</option>
+                    <option value="साइलो">साइलो</option>
+                    <option value="काइलो">काइलो</option>
+                    <option value="ठाइलो">ठाइलो</option>
+                    <option value="राहिलो">राहिलो</option>
+                    <option value="कान्छाे">कान्छो</option>
+                  </optgroup>
+                  <optgroup label="छोरीहरूका लागि क्रम">
+                    <option value="एकल छोरी">एकल छोरी</option>
+                    <option value="जेठी छोरी">जेठी छोरी</option>
+                    <option value="माइली छोरी">माइली छोरी</option>
+                    <option value="साइली छोरी">साइली छोरी</option>
+                    <option value="काइली छोरी">काइली छोरी</option>
+                    <option value="ठाइली छोरी">ठाइली छोरी</option>
+                    <option value="राहिली छोरी">राहिली छोरी</option>
+                    <option value="कान्छी छोरी">कान्छी छोरी</option>
+                  </optgroup>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>आमाको नाम:</label>
+                <input type="text" id="motherName" placeholder="उदा: दिलमाया जुग्जाली">
+              </div>
+
+              <div class="form-group">
+                <label>श्रीमती / श्रीमान्‌को नाम:</label>
+                <input type="text" id="spouseName" placeholder="उदा: सीता जुग्जाली">
+              </div>
+
+              <div class="form-group">
+                <label>जन्म वर्ष / मिति (BS):</label>
+                <input type="text" id="birthYear" placeholder="उदा: २०३५ BS">
+              </div>
+
+              <div class="form-group">
+                <label>हालको अवस्था:</label>
+                <select id="status">
+                  <option value="जीवित">जीवित</option>
+                  <option value="दिवङ्गत">दिवङ्गत</option>
+                </select>
+              </div>
+
+              <div class="form-group full-width">
+                <label>कैफियत / छोटो विवरण:</label>
+                <textarea id="notes" rows="2" placeholder="ठेगाना, पेसा वा विशेष योगदान..."></textarea>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">रद्द गर्नुहोस्</button>
+            <button type="submit" class="btn btn-primary">सुरक्षित गर्नुहोस् (Save)</button>
+          </div>
+        </form>
       </div>
     </div>
+
+    <!-- History Edit Modal -->
+    <div class="modal-overlay" id="historyModal">
+      <div class="modal-card" style="max-width: 800px;">
+        <div class="modal-header">
+          <h3>जुग्जाली इतिहास सम्पादन</h3>
+          <button class="close-btn" onclick="closeHistoryModal()">✖</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>इतिहास तथा कुलदेवता विवरण (HTML/Text):</label>
+            <textarea id="historyInputText" rows="10" style="width:100%; font-size:0.9rem; padding:8px; line-height:1.5;"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeHistoryModal()">रद्द गर्नुहोस्</button>
+          <button type="button" class="btn btn-primary" onclick="saveHistory()">सुरक्षित गर्नुहोस्</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Person Focus & Lineage Modal -->
+    <div class="modal-overlay" id="focusModal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="focusModalTitle">व्यक्तिगत वंश विवरण</h3>
+          <button class="close-btn" onclick="closeFocusModal()">✖</button>
+        </div>
+        <div class="modal-body" id="focusModalBody"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeFocusModal()">बन्द गर्नुहोस्</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
+    // --- LOGIN USERS & PASSWORDS CONFIGURATION ---
+    const USERS = {
+      "admin": "jugjali2026",  // Admin: full access
+      "guest": "jugjali123"    // Viewer: read-only
+    };
+
+    let currentUserRole = "viewer"; // "admin" or "viewer"
+
+    // --- INITIAL DEFAULT BACKUP DATA EMBEDDED ---
+    const initialBackupData = {
+      "version": "2.0",
+      "members": [
+        {"id":"M558486","fatherId":"","name":"अज्ञात","gender":"M","generation":1,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":"नाम थाहा नभएको"},
+        {"id":"M594256","fatherId":"M558486","name":"लथबिर जुग्जाली","gender":"M","generation":2,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M622106","fatherId":"M558486","name":"अज्ञात","gender":"M","generation":2,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":"नाम थाहा नभएको"},
+        {"id":"M649961","fatherId":"M558486","name":"काशिराम जुग्जाली","gender":"M","generation":2,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M685361","fatherId":"M594256","name":"पहलबिर जुग्जाली","gender":"M","generation":3,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M714635","fatherId":"M685361","name":"थिरबहादुर जुग्जाली","gender":"M","generation":4,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M746530","fatherId":"M685361","name":"पर्सलाल जुग्जाली","gender":"M","generation":4,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M778573","fatherId":"M685361","name":"मनबहादुर जुग्जाली","gender":"M","generation":4,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M809833","fatherId":"M685361","name":"अज्ञात","gender":"F","generation":4,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":"नाम थाहा नभएको"},
+        {"id":"M837089","fatherId":"M685361","name":"हरिसरा शेर्पन्जा","gender":"F","generation":4,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M859467","fatherId":"M685361","name":"पबिसरा रोका","gender":"F","generation":4,"order":"साइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M880607","fatherId":"M685361","name":"दलिमा पुन","gender":"F","generation":4,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M999900","fatherId":"M622106","name":"सिक्तानी जुग्जाली","gender":"M","generation":3,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M032299","fatherId":"M649961","name":"नरे जुग्जाली","gender":"M","generation":3,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M061786","fatherId":"M649961","name":"अज्ञात","gender":"M","generation":3,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":"नाम थाहा नभएको"},
+        {"id":"M099711","fatherId":"M649961","name":"कविराज जुग्जाली","gender":"M","generation":3,"order":"साइलो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M123055","fatherId":"M649961","name":"मन बहादुर जुग्जाली","gender":"M","generation":3,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M222206","fatherId":"M999900","name":"टेकलाल जुग्जाली","gender":"M","generation":4,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M246908","fatherId":"M999900","name":"टेकबहादुर जुग्जाली","gender":"M","generation":4,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M305837","fatherId":"M032299","name":"हरिलाल जुग्जाली","gender":"M","generation":4,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M336118","fatherId":"M032299","name":"मोते जुग्जाली","gender":"M","generation":4,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M378017","fatherId":"M032299","name":"नन्दप्रसाद जुग्जाली","gender":"M","generation":4,"order":"साइलो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M425043","fatherId":"M032299","name":"इरबहादुर जुग्जाली","gender":"M","generation":4,"order":"काइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M450810","fatherId":"M032299","name":"नन्दबहादुर जुग्जाली","gender":"M","generation":4,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M484844","fatherId":"M032299","name":"यानदेवी गर्बुजा","gender":"F","generation":4,"order":"एकल छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M545178","fatherId":"M099711","name":"नरप्रसाद जुग्जाली","gender":"M","generation":4,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M571309","fatherId":"M099711","name":"मनिबहादुर जुग्जाली","gender":"M","generation":4,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M599168","fatherId":"M099711","name":"अमती पुर्जा","gender":"F","generation":4,"order":"जेठी छोरी","motherName":"","spouseName":"पलासु पुर्जा","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M619831","fatherId":"M099711","name":"पलदेवी शेर्पन्जा","gender":"F","generation":4,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M645809","fatherId":"M099711","name":"अज्ञात","gender":"F","generation":4,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M681101","fatherId":"M123055","name":"निरप्रसाद जुग्जाली","gender":"M","generation":4,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M700393","fatherId":"M123055","name":"प्रेमप्रसाद जुग्जाली","gender":"M","generation":4,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M726230","fatherId":"M123055","name":"करु जुग्जाली","gender":"M","generation":4,"order":"साइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M746491","fatherId":"M123055","name":"तसु जुग्जाली","gender":"M","generation":4,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M770455","fatherId":"M123055","name":"देउमति पाइजा","gender":"F","generation":4,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M793612","fatherId":"M123055","name":"पम्फा शेर्पन्जा","gender":"F","generation":4,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M813652","fatherId":"M123055","name":"चेप्सरा","gender":"F","generation":4,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M069074","fatherId":"M545178","name":"संजय जुग्जाली","gender":"M","generation":5,"order":"एकल छोरो","motherName":"गंगादेवी जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M112280","fatherId":"M545178","name":"प्रेमा पुन राना","gender":"F","generation":5,"order":"एकल छोरी","motherName":"गंगादेवी जुग्जाली","spouseName":"होम राना","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M353993","fatherId":"M714635","name":"डम्बरबहादुर जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M377485","fatherId":"M714635","name":"गणेशबहादुर जुग्जाली","gender":"M","generation":5,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M409116","fatherId":"M714635","name":"दिलबहादुर जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M429276","fatherId":"M714635","name":"निरु रोका","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M454106","fatherId":"M714635","name":"इनु थापा","gender":"F","generation":5,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M476989","fatherId":"M714635","name":"श्रीमाया पाइजा","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M511533","fatherId":"M746530","name":"चक्कु जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M556612","fatherId":"M746530","name":"नरसिंग जुग्जाली","gender":"M","generation":5,"order":"माइलो","motherName":"","spouseName":"चन्द्रमाया जुग्जाली","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M591171","fatherId":"M746530","name":"खिमबहादुर जुग्जाली","gender":"M","generation":5,"order":"साइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M613240","fatherId":"M746530","name":"तमबहादुर जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M640923","fatherId":"M746530","name":"मंगसिरा रोका","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M665725","fatherId":"M746530","name":"लिलमति घर्ति","gender":"F","generation":5,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M691794","fatherId":"M746530","name":"प्रेम कुमारी रोका","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M718635","fatherId":"M778573","name":"हरिबहादुर जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M747181","fatherId":"M778573","name":"प्रेमप्रसाद जुग्जाली","gender":"M","generation":5,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M769582","fatherId":"M778573","name":"नरबहादुर जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M796407","fatherId":"M778573","name":"झुकमति जुग्जाली","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M817322","fatherId":"M778573","name":"दल कुमारी शेर्पन्जा","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M882943","fatherId":"M246908","name":"कालिप्रसाद जुग्जाली","gender":"M","generation":5,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M913202","fatherId":"M336118","name":"धनबहादुर जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M933467","fatherId":"M336118","name":"पुर्णबहादुर जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M964199","fatherId":"M336118","name":"जेठी","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M975237","fatherId":"M336118","name":"माइली","gender":"F","generation":5,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M986924","fatherId":"M336118","name":"साइली","gender":"F","generation":5,"order":"साइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M999224","fatherId":"M336118","name":"कान्छी","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M035411","fatherId":"M378017","name":"करबहादुर जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M059013","fatherId":"M378017","name":"दलप्रसाद जुग्जाली","gender":"M","generation":5,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M083518","fatherId":"M378017","name":"मनपुर जुग्जाली","gender":"M","generation":5,"order":"साइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M105967","fatherId":"M378017","name":"दलबहादुर जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M146176","fatherId":"M378017","name":"अज्ञात","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M166930","fatherId":"M378017","name":"अज्ञात","gender":"F","generation":5,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"M186978","fatherId":"M378017","name":"छिमा थापा","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M229096","fatherId":"M571309","name":"गजेन्द्र जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M246190","fatherId":"M571309","name":"पुर्णबहादुर जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M313899","fatherId":"M571309","name":"पृथकुमारी पुर्जा","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M333252","fatherId":"M571309","name":"दिपा रोका","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"गुनादेवी जुग्जाली","spouseName":"ओम रोका","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M435095","fatherId":"M700393","name":"नारायाण जुग्जाली","gender":"M","generation":5,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M453363","fatherId":"M726230","name":"रेशम जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M471452","fatherId":"M726230","name":"वालु जुग्जाली","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M489228","fatherId":"M726230","name":"उमा पाइजा","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M505542","fatherId":"M726230","name":"इन्द्रकला पुन","gender":"F","generation":5,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M527002","fatherId":"M726230","name":"इन्सु छन्त्याल","gender":"F","generation":5,"order":"साइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M541854","fatherId":"M726230","name":"धन रोका","gender":"F","generation":5,"order":"काइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M570706","fatherId":"M726230","name":"अज्ञात","gender":"F","generation":5,"order":"ठाइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M582720","fatherId":"M726230","name":"अज्ञात","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M639533","fatherId":"M746491","name":"सबिन जुग्जाली","gender":"M","generation":5,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M652683","fatherId":"M746491","name":"अज्ञात","gender":"M","generation":5,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M666043","fatherId":"M746491","name":"अज्ञात","gender":"F","generation":5,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"M677785","fatherId":"M746491","name":"अज्ञात","gender":"F","generation":5,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwlp1kts6cr","fatherId":"M377485","name":"महेन्द्र जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwm9rx4jr8t","fatherId":"M377485","name":"टपबहादुर जुग्जाली","gender":"M","generation":6,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwmoabwf1gh","fatherId":"M377485","name":"हेम बहादुर जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwn6z6zy2zj","fatherId":"M377485","name":"केशरी पुन","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwnnot3wkqz","fatherId":"M377485","name":"गौदेवी शेर्पन्जा","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwob65o2utt","fatherId":"Mmrzwlp1kts6cr","name":"मिलन जुग्जाली","gender":"M","generation":7,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"Mmrzwotvfqy69c","fatherId":"Mmrzwlp1kts6cr","name":"संजय जुग्जाली","gender":"M","generation":7,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwp7qrlkxsq","fatherId":"Mmrzwlp1kts6cr","name":"सज्जन जुग्जाली","gender":"M","generation":7,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwpytyokoxl","fatherId":"Mmrzwm9rx4jr8t","name":"करण जुग्जाली","gender":"M","generation":7,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwqe1qhyrun","fatherId":"Mmrzwm9rx4jr8t","name":"किरण जुग्जाली","gender":"M","generation":7,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwsr4g65x9h","fatherId":"M353993","name":"टेकबहादुर जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"दिवङ्गत","notes":""},
+        {"id":"Mmrzwtd2w4ehdb","fatherId":"M353993","name":"चन्द्र बहादुर जुग्जाली","gender":"M","generation":6,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwu6frj2ll5","fatherId":"M353993","name":"बिष्णु जुग्जाली","gender":"M","generation":6,"order":"साइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzwukr70lbdc","fatherId":"M353993","name":"आर्यन जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzx8seginihg","fatherId":"M556612","name":"गिरु जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"चन्द्रमाया जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzx9cs3e73lw","fatherId":"M556612","name":"गजेन्द्र जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"चन्द्रमाया जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzx9uzfda80v","fatherId":"M556612","name":"नरु पाण्डे","gender":"F","generation":6,"order":"एकल छोरी","motherName":"चन्द्रमाया जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxaech2pydr","fatherId":"M591171","name":"ईश्वर जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxb6ohfycvj","fatherId":"M591171","name":"किशोर जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxc0mygk4rf","fatherId":"M591171","name":"तिलु शेर्पन्जा","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxcldpyth26","fatherId":"M591171","name":"टीका जुग्जाली","gender":"F","generation":6,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxd2gp77jb2","fatherId":"M591171","name":"रिमा जुग्जाली","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxdvgn5ovjb","fatherId":"M613240","name":"दलबहादुर जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxebrghub8q","fatherId":"M613240","name":"मदन जुग्जाली","gender":"M","generation":6,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxestdlo2hr","fatherId":"M613240","name":"रोशन पुन","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxf8dlwcwew","fatherId":"M613240","name":"रजिता जुग्जाली","gender":"F","generation":6,"order":"एकल छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxq0xcnbxjz","fatherId":"M409116","name":"जुनु पुन","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"झुकमती जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxqpqxm9yi8","fatherId":"M409116","name":"रेखा जुग्जाली","gender":"F","generation":6,"order":"माइली छोरी","motherName":"झुकमती जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxrbokrj9qp","fatherId":"M409116","name":"तारा जुग्जाली","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"झुकमती जुग्जाली","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxs6f84ustw","fatherId":"M718635","name":"चित्र बहादुर जुग्जाली","gender":"M","generation":6,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxt09l2cryv","fatherId":"M718635","name":"हिम कुमारी पुन","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxtgo1ysaiw","fatherId":"M718635","name":"दिपा कुमारी पाइजा","gender":"F","generation":6,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxu00d1hfto","fatherId":"M718635","name":"सुस्मा जुग्जाली","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxunr5zdewh","fatherId":"M747181","name":"लेगल जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxv35g3mg8w","fatherId":"M747181","name":"लुइस जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxvk7xnsuw7","fatherId":"M769582","name":"पार्सोन जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxw0pbndxs9","fatherId":"M769582","name":"नेल्सन जुग्जाली","gender":"M","generation":6,"order":"माइलो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxwhf0ne5un","fatherId":"M769582","name":"टाइसन जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxyjg12dmma","fatherId":"M035411","name":"भिम जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxyyun6unqa","fatherId":"M035411","name":"कान्छो","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxzgkwol5i1","fatherId":"M035411","name":"कृष्ण माया रोका","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzxzygy5ovvf","fatherId":"M035411","name":"माइली","gender":"F","generation":6,"order":"माइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzy08d4f3naf","fatherId":"M035411","name":"साइली","gender":"F","generation":6,"order":"साइली छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzy0gfzcu3qe","fatherId":"M035411","name":"कान्छी","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzy29kltpn0f","fatherId":"M059013","name":"कल बहादुर जुग्जाली","gender":"M","generation":6,"order":"जेठो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzy2qfnl26w6","fatherId":"M059013","name":"लोक बहादुर जुग्जाली","gender":"M","generation":6,"order":"कान्छाे","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzy3gqa57ote","fatherId":"M229096","name":"आशिष जुग्जाली","gender":"M","generation":6,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzy3unk2r052","fatherId":"M229096","name":"आर्या जुग्जाली","gender":"F","generation":6,"order":"जेठी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzy46rjkuf4k","fatherId":"M229096","name":"कान्छी","gender":"F","generation":6,"order":"कान्छी छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzy4ewjq92pm","fatherId":"M246190","name":"जेठो","gender":"M","generation":6,"order":"एकल छोरो","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""},
+        {"id":"Mmrzyfgdqhors1","fatherId":"Mmrzwlp1kts6cr","name":"सजिना जुग्जाली","gender":"F","generation":7,"order":"एकल छोरी","motherName":"","spouseName":"","birthYear":"","status":"जीवित","notes":""}
+      ],
+      "history": "<h3>१. जुग्जाली वंशको परिचय तथा उत्पत्ति</h3>\n      <p>जुग्जाली थर मगर समुदायभित्रको एक प्रमुख र ऐतिहासिक वंशज हो। हाम्रा पुर्खाहरूको मूल थलो म्याग्दी जिल्ला (बिम तथा आसपासका भेग) मानिन्छ। त्यहाँबाट फैलिँदै हाल देश तथा विदेशका विभिन्न स्थानहरूमा जुग्जाली बन्धुहरू बसोबास गर्दै आएका छन्।</p>\n      \n      <h3>२. कुलदेवता तथा देवाली पूजा परम्परा</h3>\n      <p>जुग्जाली कुलको मुख्य कुलदेवताको थान मूल थलोमा रहेको छ। कुलपूजा परम्परागत रीतिथिति अनुसार निश्चित समयको अन्तरमा (जस्तै: वैशाख/मङ्सिर पूर्णिमा) भव्य रूपमा मनाउने गरिन्छ।</p>\n\n      <h3>३. मुख्य ध्येय र वंशावली सङ्ग्रह</h3>\n      <p>आफ्नो पुर्खाको पहिचान, इतिहास, नाता-सम्बन्ध र सांस्कृतिक जगलाई जीवन्त राख्न यो डिजिटल वंशावली अभिलेख तयार पारिएको हो।</p>"
+    };
+
     // System State
     let members = [];
     let collapsedNodes = new Set();
     let historyData = "";
 
-    // Search Results Navigation State
     let searchMatches = [];
     let searchIndex = -1;
 
-    const defaultHistoryText = `
-      <h3>१. जुग्जाली वंशको परिचय तथा उत्पत्ति</h3>
-      <p>जुग्जाली थर मगर/पुन समुदायभित्रको एक प्रमुख र ऐतिहासिक वंशज हो। हाम्रा पुर्खाहरूको मूल थलो म्याग्दी जिल्ला (बिम तथा आसपासका भेग) मानिन्छ। त्यहाँबाट फैलिँदै हाल देश तथा विदेशका विभिन्न स्थानहरूमा जुग्जाली बन्धुहरू बसोबास गर्दै आएका छन्।</p>
-      
-      <h3>२. कुलदेवता तथा देवाली पूजा परम्परा</h3>
-      <p>जुग्जाली कुलको मुख्य कुलदेवताको मन्दिर/थान मूल थलोमा रहेको छ। कुलपूजा (देवाली) परम्परागत रीतिथिति अनुसार निश्चित समयको अन्तरमा (जस्तै: वैशाख/मङ्सिर पूर्णिमा) भव्य रूपमा मनाउने गरिन्छ।</p>
-
-      <h3>३. मुख्य ध्येय र वंशावली सङ्ग्रह</h3>
-      <p>आफ्नो पुर्खाको पहिचान, इतिहास, नाता-सम्बन्ध र सांस्कृतिक जगलाई जीवन्त राख्न यो डिजिटल वंशावली अभिलेख तयार पारिएको हो।</p>
-    `;
-
-    // Pan & Touch Zoom State Variables
-    let scale = 1;
-    let panX = 0;
-    let panY = 0;
-    let isDragging = false;
-    let startX, startY;
-    let dragThresholdMoved = false;
-
-    // Mobile Pinch-to-Zoom State Tracking
-    let lastPinchDist = null;
-    let lastPinchCenter = null;
+    let scale = 1, panX = 0, panY = 0, isDragging = false, startX, startY, dragThresholdMoved = false;
+    let lastPinchDist = null, lastPinchCenter = null;
 
     window.addEventListener('DOMContentLoaded', () => {
-      loadData();
-      renderAll();
-      setupPanAndZoom();
+      checkLoginSession();
     });
+
+    function checkLoginSession() {
+      const role = sessionStorage.getItem('vanshawali_role');
+      if (role) {
+        currentUserRole = role;
+        document.getElementById('loginOverlay').style.display = 'none';
+        document.getElementById('protectedContent').style.display = 'flex';
+        applyRolePermissions();
+        loadData();
+        renderAll();
+        setupPanAndZoom();
+      } else {
+        document.getElementById('loginOverlay').style.display = 'flex';
+        document.getElementById('protectedContent').style.display = 'none';
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const u = document.getElementById('loginUser').value.trim().toLowerCase();
+      const p = document.getElementById('loginPass').value.trim();
+
+      if (USERS[u] && USERS[u] === p) {
+        currentUserRole = (u === 'admin') ? 'admin' : 'viewer';
+        sessionStorage.setItem('vanshawali_role', currentUserRole);
+        document.getElementById('loginError').style.display = 'none';
+        checkLoginSession();
+      } else {
+        document.getElementById('loginError').style.display = 'block';
+      }
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('vanshawali_role');
+      location.reload();
+    }
+
+    function applyRolePermissions() {
+      const roleBadge = document.getElementById('roleDisplay');
+      if (currentUserRole === 'admin') {
+        roleBadge.innerText = '👨‍💼 Admin Mode';
+        roleBadge.style.background = '#22c55e';
+        roleBadge.style.color = '#ffffff';
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
+      } else {
+        roleBadge.innerText = '👁️ Viewer Mode';
+        roleBadge.style.background = '#f59e0b';
+        roleBadge.style.color = '#0f172a';
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+      }
+    }
 
     function esc(value) {
       return String(value ?? '').replace(/[&<>"']/g, ch => ({
@@ -1048,6 +1352,38 @@
       return id;
     }
 
+    function getOrderRank(orderStr) {
+      const ord = (orderStr || '').toLowerCase();
+      if (ord.includes('मूल') || ord.includes('एकल')) return 0;
+      if (ord.includes('जेठो') || ord.includes('जेठी')) return 1;
+      if (ord.includes('माइलो') || ord.includes('माइली')) return 2;
+      if (ord.includes('साइलो') || ord.includes('साइली') || ord.includes('साँहिलो')) return 3;
+      if (ord.includes('काइलो') || ord.includes('काइली') || ord.includes('काँहिलो')) return 4;
+      if (ord.includes('ठाइलो') || ord.includes('ठाइली') || ord.includes('ठाँहिलो')) return 5;
+      if (ord.includes('राहिलो') || ord.includes('राहिली') || ord.includes('राँहिलो')) return 6;
+      if (ord.includes('कान्छा') || ord.includes('कान्छी')) return 7;
+      return 99;
+    }
+
+    function getSortedMembers(rawList = null) {
+      const list = rawList || members;
+      return [...list].sort((a, b) => {
+        const genA = parseInt(a.generation) || 1;
+        const genB = parseInt(b.generation) || 1;
+        if (genA !== genB) return genA - genB;
+
+        const fA = a.fatherId || '';
+        const fB = b.fatherId || '';
+        if (fA !== fB) return fA.localeCompare(fB);
+
+        const rankA = getOrderRank(a.order);
+        const rankB = getOrderRank(b.order);
+        if (rankA !== rankB) return rankA - rankB;
+
+        return a.name.localeCompare(b.name, 'ne');
+      });
+    }
+
     function showToast(message = "✓ सेभ भयो (Auto-saved)") {
       const toast = document.getElementById('toast');
       toast.innerText = message;
@@ -1058,14 +1394,17 @@
     function loadData() {
       const saved = localStorage.getItem('vanshawali_db_v2');
       if (saved) {
-        try { members = JSON.parse(saved); } catch (e) { members = []; }
-      } else { members = []; }
+        try { members = JSON.parse(saved); } catch (e) { members = initialBackupData.members; }
+      } else {
+        members = initialBackupData.members;
+      }
 
       const savedHistory = localStorage.getItem('vanshawali_history_v1');
-      historyData = savedHistory || defaultHistoryText;
+      historyData = savedHistory || initialBackupData.history;
     }
 
     function saveData() {
+      if (currentUserRole !== 'admin') return;
       localStorage.setItem('vanshawali_db_v2', JSON.stringify(members));
       localStorage.setItem('vanshawali_history_v1', historyData);
       updateStats();
@@ -1080,6 +1419,7 @@
       renderTable();
       renderAnalytics();
       renderHistory();
+      applyRolePermissions();
     }
 
     function updateStats() {
@@ -1125,7 +1465,7 @@
       select.innerHTML = '<option value="">-- मूल पूर्वज (Root Ancestor - कुनै बाबु नभएको) --</option>';
       
       const maleMembers = members.filter(m => m.gender === 'M');
-      maleMembers.sort((a, b) => a.generation - b.generation || a.name.localeCompare(b.name));
+      maleMembers.sort((a, b) => (parseInt(a.generation)||1) - (parseInt(b.generation)||1) || a.name.localeCompare(b.name, 'ne'));
 
       maleMembers.forEach(m => {
         const opt = document.createElement('option');
@@ -1151,7 +1491,7 @@
     }
 
     function relMatchList(query) {
-      const sorted = [...members].sort((a, b) => a.generation - b.generation || a.name.localeCompare(b.name, 'ne'));
+      const sorted = getSortedMembers();
       const q = query.trim().toLowerCase();
       if (!q) return sorted;
       return sorted.filter(m => (m.name || '').toLowerCase().includes(q));
@@ -1170,7 +1510,7 @@
         listEl.innerHTML = matches.map((m, i) => `
           <div class="autocomplete-item${i === 0 ? ' highlighted' : ''}" data-id="${esc(m.id)}"
                onmousedown="event.preventDefault(); selectRelPerson('${which}', '${esc(m.id)}')">
-            <span>${esc(m.name)}</span>
+            <span>${esc(m.name)} <small>(${esc(m.order || '-')})</small></span>
             <span class="ac-gen">पुस्ता ${esc(m.generation)}</span>
           </div>
         `).join('');
@@ -1227,7 +1567,6 @@
       }
     }
 
-    // --- ENHANCED UNIVERSAL TOUCH & MOUSE DRAG/ZOOM ENGINE ---
     function setupPanAndZoom() {
       const viewport = document.getElementById('viewport');
       updateTransform();
@@ -1392,7 +1731,7 @@
       const roots = members.filter(m => !m.fatherId || !members.some(parent => parent.id === m.fatherId));
 
       if (roots.length === 0) {
-        wrapper.innerHTML = '<div style="padding: 40px 20px; color: #64748b;"><h3>जुग्जाली वंशावली विवरण खाली छ।</h3><p style="margin-top:8px;">कृपया <strong>"नयाँ सदस्य"</strong> थपेर वा <strong>Import</strong> गरेर सुरु गर्नुहोस्।</p></div>';
+        wrapper.innerHTML = '<div style="padding: 40px 20px; color: #64748b;"><h3>जुग्जाली वंशावली विवरण खाली छ।</h3></div>';
         return;
       }
 
@@ -1400,6 +1739,8 @@
       treeContainer.className = 'tf-tree';
 
       const rootUl = document.createElement('ul');
+
+      roots.sort((a, b) => getOrderRank(a.order) - getOrderRank(b.order));
 
       roots.forEach(root => {
         const li = buildTreeRecursive(root);
@@ -1423,11 +1764,26 @@
       const safeId = esc(member.id);
 
       const children = members.filter(m => m.fatherId === member.id);
+      children.sort((a, b) => getOrderRank(a.order) - getOrderRank(b.order));
+
       const isCollapsed = collapsedNodes.has(member.id);
 
       let toggleBtnHtml = '';
       if (member.gender === 'M' && children.length > 0) {
         toggleBtnHtml = `<div class="collapse-toggle" onclick="toggleCollapse(event, '${safeId}')" title="${isCollapsed ? 'शाखा खोल्नुहोस्' : 'शाखा ढाक्नुहोस्'}">${isCollapsed ? '+' : '-'}</div>`;
+      }
+
+      // Hide Action Buttons if Viewer
+      let actionsHtml = '';
+      if (currentUserRole === 'admin') {
+        actionsHtml = `
+          <div class="member-actions">
+            ${member.gender === 'M' ? `<button class="action-btn add-child" onclick="openAddModalForParent('${safeId}')" title="छोराछोरी थप्नुहोस्">+ सन्तति</button>` : ''}
+            ${!member.fatherId ? `<button class="action-btn add-parent" onclick="addOlderAncestor('${safeId}')" title="माथिल्लो पूर्वज/बुवा थप्नुहोस्">+ पूर्वज</button>` : ''}
+            <button class="action-btn" onclick="openEditModal('${safeId}')">✏️</button>
+            <button class="action-btn delete-btn" onclick="deleteMember('${safeId}')" title="हटाउनुहोस्">🗑️</button>
+          </div>
+        `;
       }
 
       card.innerHTML = `
@@ -1440,12 +1796,7 @@
           ${member.order ? '• ' + esc(member.order) : ''} ${birthText}
           ${spouseText}
         </div>
-        <div class="member-actions">
-          ${member.gender === 'M' ? `<button class="action-btn add-child" onclick="openAddModalForParent('${safeId}')" title="छोराछोरी थप्नुहोस्">+ सन्तति</button>` : ''}
-          ${!member.fatherId ? `<button class="action-btn add-parent" onclick="addOlderAncestor('${safeId}')" title="माथिल्लो पूर्वज/बुवा थप्नुहोस्">+ पूर्वज</button>` : ''}
-          <button class="action-btn" onclick="openEditModal('${safeId}')">✏️</button>
-          <button class="action-btn delete-btn" onclick="deleteMember('${safeId}')" title="हटाउनुहोस्">🗑️</button>
-        </div>
+        ${actionsHtml}
         ${toggleBtnHtml}
       `;
 
@@ -1470,18 +1821,12 @@
       renderTree();
     }
 
-    // --- RENDER TABLE VIEW (SORTED GENERATION-WISE) ---
+    // --- RENDER TABLE VIEW ---
     function renderTable(filteredData = null) {
       const tbody = document.getElementById('tableBody');
       tbody.innerHTML = '';
 
-      // Sort data generation-wise (1, 2, 3...)
-      const rawData = filteredData || members;
-      const dataToRender = [...rawData].sort((a, b) => 
-        (parseInt(a.generation) || 1) - (parseInt(b.generation) || 1) || 
-        (a.fatherId || '').localeCompare(b.fatherId || '') || 
-        a.name.localeCompare(b.name, 'ne')
-      );
+      const dataToRender = getSortedMembers(filteredData);
 
       if (dataToRender.length === 0) {
         tbody.innerHTML = '<tr><td colspan="10" style="text-align:center; padding:20px; color:#64748b;">कुनै विवरण उपलब्ध छैन।</td></tr>';
@@ -1493,6 +1838,16 @@
         const fatherName = father ? esc(father.name) : '-';
         const safeId = esc(m.id);
 
+        let actionCell = '';
+        if (currentUserRole === 'admin') {
+          actionCell = `
+            <td class="admin-only">
+              <button class="action-btn" onclick="openEditModal('${safeId}')">✏️ सम्पादन</button>
+              <button class="action-btn delete-btn" onclick="deleteMember('${safeId}')">🗑️ हटाउनुहोस्</button>
+            </td>
+          `;
+        }
+
         const tr = document.createElement('tr');
         tr.innerHTML = `
           <td><strong>${safeId}</strong></td>
@@ -1503,17 +1858,13 @@
           <td>${esc(m.motherName) || '-'}</td>
           <td>${esc(m.spouseName) || '-'}</td>
           <td>${esc(m.birthYear) || ''} (${esc(m.status) || 'जीवित'})</td>
-          <td>${esc(m.order) || '-'}</td>
-          <td>
-            <button class="action-btn" onclick="openEditModal('${safeId}')">✏️ सम्पादन</button>
-            <button class="action-btn delete-btn" onclick="deleteMember('${safeId}')">🗑️ हटाउनुहोस्</button>
-          </td>
+          <td><strong>${esc(m.order) || '-'}</strong></td>
+          ${actionCell}
         `;
         tbody.appendChild(tr);
       });
     }
 
-    // --- RESTRUCTURED NEPALI KINSHIP RELATIONSHIP CALCULATOR ---
     function calculateRelationship() {
       const idA = document.getElementById('relPersonA').value;
       const idB = document.getElementById('relPersonB').value;
@@ -1666,7 +2017,6 @@
       box.style.display = 'block';
     }
 
-    // --- RENDER ANALYTICS DASHBOARD ---
     function renderAnalytics() {
       document.getElementById('dashTotal').innerText = members.length;
       document.getElementById('dashLiving').innerText = members.filter(m => m.status === 'जीवित' || !m.status).length;
@@ -1711,12 +2061,12 @@
       `;
     }
 
-    // --- RENDER HISTORY & EDIT ---
     function renderHistory() {
       document.getElementById('historyContentDisplay').innerHTML = historyData;
     }
 
     function openHistoryEditModal() {
+      if (currentUserRole !== 'admin') return;
       document.getElementById('historyInputText').value = historyData;
       document.getElementById('historyModal').style.display = 'flex';
     }
@@ -1726,6 +2076,7 @@
     }
 
     function saveHistory() {
+      if (currentUserRole !== 'admin') return;
       historyData = document.getElementById('historyInputText').value.trim();
       saveData();
       renderHistory();
@@ -1733,7 +2084,6 @@
       showToast("इतिहास विवरण सेभ भयो!");
     }
 
-    // --- LINEAGE / FOCUS MODAL ---
     function openFocusModal(personId) {
       const person = members.find(m => m.id === personId);
       if (!person) return;
@@ -1753,6 +2103,7 @@
       const descendants = [];
       function getDescendantsRecursive(parentId) {
         const children = members.filter(m => m.fatherId === parentId);
+        children.sort((a, b) => getOrderRank(a.order) - getOrderRank(b.order));
         children.forEach(child => {
           descendants.push(child);
           if (child.gender === 'M') getDescendantsRecursive(child.id);
@@ -1808,7 +2159,6 @@
 
     function closeFocusModal() { document.getElementById('focusModal').style.display = 'none'; }
 
-    // --- MULTI-MATCH SEARCH WITH ENTER CYCLE & NAVIGATION ---
     function handleSearchInput() {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
       
@@ -1921,8 +2271,8 @@
       updateTransform();
     }
 
-    // --- MODAL & FORM OPERATIONS ---
     function openAddModal() {
+      if (currentUserRole !== 'admin') return;
       document.getElementById('modalTitle').innerText = 'नयाँ जुग्जाली सदस्य प्रविष्टि';
       document.getElementById('memberForm').reset();
       document.getElementById('memberId').value = '';
@@ -1931,12 +2281,14 @@
     }
 
     function openAddModalForParent(parentId) {
+      if (currentUserRole !== 'admin') return;
       openAddModal();
       document.getElementById('fatherId').value = parentId;
       updateGenerationFromFather();
     }
 
     function addOlderAncestor(currentRootId) {
+      if (currentUserRole !== 'admin') return;
       const currentRoot = members.find(m => m.id === currentRootId);
       if (!currentRoot) return;
 
@@ -1978,6 +2330,7 @@
     }
 
     function openEditModal(id) {
+      if (currentUserRole !== 'admin') return;
       const m = members.find(item => item.id === id);
       if (!m) return;
 
@@ -2003,6 +2356,7 @@
 
     function saveMember(e) {
       e.preventDefault();
+      if (currentUserRole !== 'admin') return;
 
       const id = document.getElementById('memberId').value;
       const fatherId = document.getElementById('fatherId').value;
@@ -2032,6 +2386,7 @@
     }
 
     function deleteMember(id) {
+      if (currentUserRole !== 'admin') return;
       const member = members.find(m => m.id === id);
       if (!member) return;
 
@@ -2063,7 +2418,6 @@
       members = members.filter(m => m.id !== parentId);
     }
 
-    // --- INSTANT EXPORT TO WORD (.DOCX) - GENERATION-WISE SORTED TABLE & HISTORY ---
     function exportToWord() {
       if (members.length === 0) {
         alert("डाउनलोड गर्नका लागि वंशावलीमा कुनै डेटा उपलब्ध छैन।");
@@ -2072,14 +2426,8 @@
 
       showToast("Word (.docx) फाइल तयार हुँदैछ...");
 
-      // Sort Members strictly by Generation (1, 2, 3...)
-      const sortedMembers = [...members].sort((a, b) => 
-        (parseInt(a.generation) || 1) - (parseInt(b.generation) || 1) || 
-        (a.fatherId || '').localeCompare(b.fatherId || '') || 
-        a.name.localeCompare(b.name, 'ne')
-      );
+      const sortedMembers = getSortedMembers();
 
-      // Build Generation-wise Structured Table Rows
       let currentGen = null;
       let tableRowsHtml = '';
 
@@ -2087,7 +2435,6 @@
         const father = members.find(f => f.id === m.fatherId);
         const mGen = parseInt(m.generation) || 1;
 
-        // Header banner for each new Generation
         if (mGen !== currentGen) {
           currentGen = mGen;
           tableRowsHtml += `
@@ -2108,13 +2455,12 @@
             <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${father ? esc(father.name) : '-'}</td>
             <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${esc(m.motherName) || '-'}</td>
             <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${esc(m.spouseName) || '-'}</td>
-            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${esc(m.order) || '-'}</td>
+            <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px; font-weight:bold; color:#1e3a8a;">${esc(m.order) || '-'}</td>
             <td style="border:1px solid #cbd5e1; padding:6px; font-size:11px;">${esc(m.status) || 'जीवित'}</td>
           </tr>
         `;
       });
 
-      // Full Word Document HTML Template
       const wordDocumentHtml = `
         <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head>
@@ -2133,7 +2479,7 @@
           <h1>🌳 जुग्जाली वंशावली अभिलेख तथा पारिवारिक विवरण</h1>
           <p class="subtitle">अभिलेख मिति: ${new Date().toLocaleDateString('ne-NP')} | कुल दर्ता सदस्य: ${members.length} जना</p>
 
-          <h2>📋 १. पुस्ता अनुसार सदस्यहरूको पूर्ण विवरण तालिका (Generation-wise Table)</h2>
+          <h2>📋 १. पुस्ता तथा जन्म-क्रम अनुसार सदस्यहरूको विवरण (Sorted Table)</h2>
           <table>
             <thead>
               <tr style="background-color:#f1f5f9;">
@@ -2144,7 +2490,7 @@
                 <th>बुवाको नाम</th>
                 <th>आमाको नाम</th>
                 <th>श्रीमती/श्रीमान्</th>
-                <th>क्रम</th>
+                <th>क्रम (Order)</th>
                 <th>अवस्था</th>
               </tr>
             </thead>
@@ -2159,7 +2505,6 @@
         </html>
       `;
 
-      // Download Word Blob
       const blob = new Blob(['\ufeff', wordDocumentHtml], { type: 'application/msword' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
@@ -2169,7 +2514,6 @@
       showToast("✓ Word (.doc/.docx) फाइल डाउनलोड भयो!");
     }
 
-    // --- EXPORT TO NATIVE EXCEL (.XLSX) - GENERATION-WISE SORTED ---
     function exportToXLSX() {
       if (members.length === 0) {
         alert("निकाल्नका लागि कुनै डेटा उपलब्ध छैन।");
@@ -2178,12 +2522,7 @@
 
       showToast("Excel (.xlsx) फाइल तयार हुँदैछ...");
 
-      // Sort Members strictly by Generation (1, 2, 3...)
-      const sortedMembers = [...members].sort((a, b) => 
-        (parseInt(a.generation) || 1) - (parseInt(b.generation) || 1) || 
-        (a.fatherId || '').localeCompare(b.fatherId || '') || 
-        a.name.localeCompare(b.name, 'ne')
-      );
+      const sortedMembers = getSortedMembers();
 
       const excelRows = sortedMembers.map(m => {
         const father = members.find(f => f.id === m.fatherId);
@@ -2219,7 +2558,6 @@
       XLSX.writeFile(workbook, filename);
     }
 
-    // --- BACKUP (JSON) ---
     function exportToJSON() {
       if (members.length === 0 && !historyData) {
         alert("निकाल्नका लागि कुनै डेटा उपलब्ध छैन।");
@@ -2241,10 +2579,13 @@
       downloadAnchor.remove();
     }
 
-    function triggerImport() { document.getElementById('fileInput').click(); }
+    function triggerImport() {
+      if (currentUserRole !== 'admin') return;
+      document.getElementById('fileInput').click();
+    }
 
-    // --- ENHANCED IMPORT ---
     function handleFileImport(event) {
+      if (currentUserRole !== 'admin') return;
       const file = event.target.files[0];
       if (!file) return;
 
