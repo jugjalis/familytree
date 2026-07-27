@@ -835,7 +835,7 @@
     <div id="relationTab" class="tab-content">
       <div class="rel-card">
         <h2 style="color:var(--primary); font-size:1.15rem; margin-bottom:10px; border-bottom:2px solid #e2e8f0; padding-bottom:6px;">🔍 जुग्जाली नाता तथा साझा पूर्वज खोज प्रणाली</h2>
-        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">कुनै दुई व्यक्ति छान्नुहोस् र नेपाली पारिवारिक परम्परा अनुसार उहाँहरू बीचको नाता तथा साझा पुर्खा (Common Ancestor) पत्ता लगाउनुहोस्।</p>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">कुनै दुई व्यक्ति छान्नुहोस् र नेपाली पारिवारिक परम्परा अनुसार उहाँहरू बीचको नाता तथा साझा पुर्खा (Common Ancestor) पत्ता लगाउनुहोस्。</p>
         
         <div class="rel-select-grid">
           <div class="form-group">
@@ -1113,8 +1113,9 @@
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      loadData();
+    // Auto-Fetch implementation
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadData();
       renderAll();
       setupPanAndZoom();
     });
@@ -1140,7 +1141,30 @@
       setTimeout(() => { toast.style.display = 'none'; }, 2000);
     }
 
-    function loadData() {
+    async function loadData() {
+      try {
+        // GitHub बाट सीधै 'data.json' तान्ने (cache समस्या हटाउन समय जोडिएको छ)
+        const response = await fetch('data.json?v=' + new Date().getTime());
+        if (response.ok) {
+          const serverData = await response.json();
+          
+          if (Array.isArray(serverData)) {
+            members = serverData;
+          } else if (serverData && Array.isArray(serverData.members)) {
+            members = serverData.members;
+            if (serverData.history) historyData = serverData.history;
+          }
+          
+          // सर्भरको नयाँ डेटालाई लोकल स्टोरेजमा पनि अपडेट गरिदिने
+          localStorage.setItem('vanshawali_db_v2', JSON.stringify(members));
+          localStorage.setItem('vanshawali_history_v1', historyData || defaultHistoryText);
+          return; // सर्भरबाट डेटा आएपछि यहाँबाटै फर्किन्छ
+        }
+      } catch (error) {
+        console.warn('सर्भरबाट डेटा तान्न सकिएन, लोकल स्टोरेज प्रयोग गर्दैछौँ।');
+      }
+
+      // यदि सर्भरमा data.json छैन वा अफलाइन छ भने मात्र लोकल मेमोरीबाट लिने
       const saved = localStorage.getItem('vanshawali_db_v2');
       if (saved) {
         try { members = JSON.parse(saved); } catch (e) { members = []; }
@@ -1154,7 +1178,7 @@
       localStorage.setItem('vanshawali_db_v2', JSON.stringify(members));
       localStorage.setItem('vanshawali_history_v1', historyData);
       updateStats();
-      showToast();
+      showToast("✓ सेभ भयो! (स्थायी बनाउन Backup लिएर GitHub मा data.json अपडेट गर्नुहोस्)");
     }
 
     function renderAll() {
@@ -2305,7 +2329,7 @@
       XLSX.writeFile(workbook, filename);
     }
 
-    // --- BACKUP (JSON) ---
+    // --- BACKUP (JSON) - नाम data.json बनाइएको ---
     function exportToJSON() {
       if (members.length === 0 && !historyData) {
         alert("निकाल्नका लागि कुनै डेटा उपलब्ध छैन।");
@@ -2321,7 +2345,8 @@
       const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupPackage, null, 2));
       const downloadAnchor = document.createElement('a');
       downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `jugjali_vanshawali_backup_${new Date().toISOString().slice(0,10)}.json`);
+      // नाम परिवर्तन गरेर data.json राखिएको छ ताकि GitHub मा सिधै हाल्न मिलोस्
+      downloadAnchor.setAttribute("download", `data.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
