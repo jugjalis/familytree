@@ -746,14 +746,14 @@
   <header>
     <div class="logo-area">
       <h1>🌳 जुग्जाली वंशावली अभिलेख तथा पारिवारिक वृक्ष</h1>
-      <p>पारिवारिक संरचना तथा जुग्जाली वंशज सङ्ग्रह प्रणाली (Offline System)</p>
+      <p>पारिवारिक संरचना तथा जुग्जाली वंशज सङ्ग्रह प्रणाली</p>
     </div>
     <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
       <div class="stats-bar">
         <div>कुल सदस्य: <span id="statTotal">0</span></div>
         <div>कुल पुस्ता: <span id="statGen">0</span></div>
-        <div>छोरा: <span id="statSons">0</span></div>
-        <div>छोरीहरू: <span id="statDaughters">0</span></div>
+        <div>पुरुष: <span id="statSons">0</span></div>
+        <div>महिला: <span id="statDaughters">0</span></div>
       </div>
       <!-- Logout Button Added -->
       <button onclick="logout()" class="logout-btn">🚪 लगआउट (Logout)</button>
@@ -951,38 +951,38 @@
                   <option value="एकल छोरो">एकल छोरो</option>
                   <option value="जेठो">जेठो</option>
                   <option value="माइलो">माइलो</option>
-                  <option value="साइलो">साइलो</option>
-                  <option value="काइलो">काइलो</option>
-                  <option value="ठाइलो">ठाइलो</option>
-                  <option value="राहिलो">राहिलो</option>
+                  <option value="साइँलो">साइँलो</option>
+                  <option value="काइँलो">काइँलो</option>
+                  <option value="ठाइँलो">ठाइँलो</option>
+                  <option value="राइँलो">राइँलो</option>
                   <option value="कान्छाे">कान्छो</option>
                 </optgroup>
                 <optgroup label="छोरीहरूका लागि क्रम">
                   <option value="एकल छोरी">एकल छोरी</option>
-                  <option value="जेठी छोरी">जेठी छोरी</option>
-                  <option value="माइली छोरी">माइली छोरी</option>
-                  <option value="साइली छोरी">साइली छोरी</option>
-                  <option value="काइली छोरी">काइली छोरी</option>
-                  <option value="ठाइली छोरी">ठाइली छोरी</option>
-                  <option value="राहिली छोरी">राहिली छोरी</option>
-                  <option value="कान्छी छोरी">कान्छी छोरी</option>
+                  <option value="जेठी">जेठी</option>
+                  <option value="माइली">माइली</option>
+                  <option value="साइँली">साइँली</option>
+                  <option value="काइँली">काइँली</option>
+                  <option value="ठाइँली">ठाइँली</option>
+                  <option value="राहिली">राइँली</option>
+                  <option value="कान्छी">कान्छी</option>
                 </optgroup>
               </select>
             </div>
 
             <div class="form-group">
               <label>आमाको नाम:</label>
-              <input type="text" id="motherName" placeholder="उदा: दिलमाया जुग्जाली">
+              <input type="text" id="motherName" placeholder="उदा: नाम थर">
             </div>
 
             <div class="form-group">
               <label>श्रीमती / श्रीमान्‌को नाम:</label>
-              <input type="text" id="spouseName" placeholder="उदा: सीता जुग्जाली">
+              <input type="text" id="spouseName" placeholder="उदा: नाम थर">
             </div>
 
             <div class="form-group">
               <label>जन्म वर्ष / मिति (BS):</label>
-              <input type="text" id="birthYear" placeholder="उदा: २०३५ BS">
+              <input type="text" id="birthYear" placeholder="उदा: वि.सं">
             </div>
 
             <div class="form-group">
@@ -1054,7 +1054,7 @@
 
     const defaultHistoryText = `
       <h3>१. जुग्जाली वंशको परिचय तथा उत्पत्ति</h3>
-      <p>जुग्जाली थर मगर/पुन समुदायभित्रको एक प्रमुख र ऐतिहासिक वंशज हो। हाम्रा पुर्खाहरूको मूल थलो म्याग्दी जिल्ला (बिम तथा आसपासका भेग) मानिन्छ। त्यहाँबाट फैलिँदै हाल देश तथा विदेशका विभिन्न स्थानहरूमा जुग्जाली बन्धुहरू बसोबास गर्दै आएका छन्।</p>
+      <p>जुग्जाली थर मगर समुदायभित्रको एक प्रमुख र ऐतिहासिक वंशज हो। हाम्रा पुर्खाहरूको मूल थलो म्याग्दी जिल्ला (बिम तथा आसपासका भेग) मानिन्छ। त्यहाँबाट फैलिँदै हाल देश तथा विदेशका विभिन्न स्थानहरूमा जुग्जाली बन्धुहरू बसोबास गर्दै आएका छन्।</p>
       
       <h3>२. कुलदेवता तथा देवाली पूजा परम्परा</h3>
       <p>जुग्जाली कुलको मुख्य कुलदेवताको मन्दिर/थान मूल थलोमा रहेको छ। कुलपूजा (देवाली) परम्परागत रीतिथिति अनुसार निश्चित समयको अन्तरमा (जस्तै: वैशाख/मङ्सिर पूर्णिमा) भव्य रूपमा मनाउने गरिन्छ।</p>
@@ -2050,7 +2050,7 @@
       const currentRoot = members.find(m => m.id === currentRootId);
       if (!currentRoot) return;
 
-      const parentName = prompt(`"${currentRoot.name}" को माथिल्लो पूर्वज/बुवाको नाम लेख्नुहोस् (उदा: कवीराम जुग्जाली):`);
+      const parentName = prompt(`"${currentRoot.name}" को माथिल्लो पूर्वज/बुवाको नाम लेख्नुहोस् (उदा: नाम थर):`);
       if (!parentName || !parentName.trim()) return;
 
       const newParentId = generateId();
